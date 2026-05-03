@@ -118,7 +118,9 @@ export const giscusConfig = {
 	reactionsEnabled: "1",
 	emitMetadata: "0",
 	inputPosition: "top", // top / bottom
-	theme: "preferred_color_scheme", // light / dark / preferred_color_scheme
+	// Giscus 主题：noborder_dark = 无边框深色，与暗夜赤焰主题最融合
+	// 其它可选：dark / dark_dimmed / transparent_dark / noborder_gray / cobalt
+	theme: "noborder_dark",
 	lang: "zh-CN",
 	loading: "lazy",
 };
@@ -126,8 +128,8 @@ export const giscusConfig = {
 // Cloudflare Web Analytics
 // 在 Cloudflare Dashboard → Analytics & Logs → Web Analytics 创建后获得 token
 export const cloudflareAnalyticsConfig = {
-	enable: false, // 拿到 token 后改为 true
-	token: "",
+	enable: true,
+	token: "6c90cfbec0ba4eb08eb4ca13dd10cd50",
 };
 
 export const expressiveCodeConfig: ExpressiveCodeConfig = {
