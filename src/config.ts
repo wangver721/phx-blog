@@ -108,11 +108,11 @@ export const licenseConfig: LicenseConfig = {
 // Giscus 评论系统配置（基于 GitHub Discussions，免费）
 // 部署步骤：见 README.md "启用评论"
 export const giscusConfig = {
-	enable: false, // 完成 Giscus 配置后改为 true
-	repo: "wangver721/phx-blog", // 仓库 owner/name（部署后按实际仓库改）
-	repoId: "", // 在 https://giscus.app 生成
-	category: "Announcements", // Discussions 分类名
-	categoryId: "", // 在 https://giscus.app 生成
+	enable: true,
+	repo: "wangver721/phx-blog",
+	repoId: "R_kgDOSTCaIA",
+	category: "Announcements",
+	categoryId: "DIC_kwDOSTCaIM4C8PcG",
 	mapping: "pathname", // pathname / url / title / og:title
 	strict: "0",
 	reactionsEnabled: "1",
