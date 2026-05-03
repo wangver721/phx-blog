@@ -1,0 +1,36 @@
+[    4480ms] [INFO] %c無名の主页 %c
+ _____ __  __  _______     ____     __
+|_   _|  \/  |/ ____\ \   / /\ \   / /
+  | | | \  / | (___  \ \_/ /  \ \_/ /
+  | | | |\/| |\___ \  \   /    \   /
+ _| |_| |  | |____) |  | |      | |
+|_____|_|  |_|_____/   |_|      |_| %c
+
+版本: 4.1.4
+主页: https://imsyy.top
+Github: https://github.com/imsyy/home font-size: 20px;font-weight: 600;color: rgb(244,167,89); font-size:12px;color: rgb(244,167,89); color: rgb(30,152,255); @ https://iphx.io/assets/index-565348e7.js:31
+[    4480ms] [INFO] %c李宗霖的主页 %c
+ _____   __   __  __ _     _____ _
+|_   _| /  \ |  \/  | |   |___  | |
+  | |  / /\ \| \  / | |      / /| |
+  | | | |__| | |\/| | |     / / | |
+ _| |_|  __  | |  | | |___ / /__| |___
+|_____|_|  |_|_|  |_|_____|_____|_____| %c
+
+版本: 1.1.3
+主页: https://imlzl.cn
+Github: https://github.com/supine0703/home font-size: 20px;font-weight: 600;color: rgb(244,167,89); font-size:12px;color: rgb(244,167,89); color: rgb(30,152,255); @ https://iphx.io/assets/index-565348e7.js:31
+[    4480ms] [INFO] %cPHX 的个人主页 %c
+  _____  _   _ __  __
+ |  __ \| | | |\ \/ /
+ | |__) | |_| | \  / 
+ |  ___/|  _  | /  \ 
+ | |    | | | |/ /\ \
+ |_|    |_| |_/_/  \_\ %c
+
+版本: 1.0.0
+主页: https://iPHX.io
+Github: https://github.com/wangver721 font-size: 20px;font-weight: 600;color: rgb(244,167,89); font-size:12px;color: rgb(244,167,89); color: rgb(30,152,255); @ https://iphx.io/assets/index-565348e7.js:31
+[    6790ms] [ERROR] Failed to load resource: net::ERR_CERT_AUTHORITY_INVALID @ https://api.oioweb.cn/api/weather/GetWeather:0
+[    6790ms] [ERROR] 天气信息获取失败:TypeError: Failed to fetch @ https://iphx.io/assets/index-565348e7.js:31
+[    6795ms] [ERROR] 天气信息获取失败 @ https://iphx.io/assets/index-565348e7.js:31

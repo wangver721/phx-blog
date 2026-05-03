@@ -1,0 +1,17 @@
+---
+import type { MarkdownHeading } from "astro";
+import Profile from "./Profile.astro";
+
+interface Props {
+	class?: string;
+	headings?: MarkdownHeading[];
+}
+
+const className = Astro.props.class;
+---
+{/* 侧边栏：分类与标签小组件已按 PHX 偏好移除，只保留个人资料卡 */}
+<div id="sidebar" class:list={[className, "w-full"]}>
+    <div class="flex flex-col w-full gap-4 mb-4">
+        <Profile></Profile>
+    </div>
+</div>

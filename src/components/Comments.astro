@@ -1,0 +1,32 @@
+---
+// Giscus 评论组件
+// 仅当 src/config.ts 中 giscusConfig.enable 为 true 时才渲染
+import { giscusConfig } from "@/config";
+
+const enabled =
+	giscusConfig.enable && giscusConfig.repoId && giscusConfig.categoryId;
+---
+
+{
+	enabled && (
+		<div class="card-base px-6 md:px-9 py-6 mb-4 onload-animation">
+			<script
+				src="https://giscus.app/client.js"
+				data-repo={giscusConfig.repo}
+				data-repo-id={giscusConfig.repoId}
+				data-category={giscusConfig.category}
+				data-category-id={giscusConfig.categoryId}
+				data-mapping={giscusConfig.mapping}
+				data-strict={giscusConfig.strict}
+				data-reactions-enabled={giscusConfig.reactionsEnabled}
+				data-emit-metadata={giscusConfig.emitMetadata}
+				data-input-position={giscusConfig.inputPosition}
+				data-theme={giscusConfig.theme}
+				data-lang={giscusConfig.lang}
+				data-loading={giscusConfig.loading}
+				crossorigin="anonymous"
+				async
+			/>
+		</div>
+	)
+}

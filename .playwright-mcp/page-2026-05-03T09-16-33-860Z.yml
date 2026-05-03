@@ -1,0 +1,464 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]:
+    - link "iPHX.io" [ref=e6] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e7]:
+        - img [ref=e8]
+        - text: iPHX.io
+    - generic [ref=e10]:
+      - link "主页" [ref=e11] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e12]: 主页
+      - link "归档" [ref=e13] [cursor=pointer]:
+        - /url: /archive/
+        - generic [ref=e14]: 归档
+      - link "关于" [ref=e15] [cursor=pointer]:
+        - /url: /about/
+        - generic [ref=e16]: 关于
+      - link "iPHX.io" [ref=e17] [cursor=pointer]:
+        - /url: https://iphx.io
+        - generic [ref=e18]:
+          - text: iPHX.io
+          - img [ref=e19]
+      - link "GitHub" [ref=e21] [cursor=pointer]:
+        - /url: https://github.com/wangver721
+        - generic [ref=e22]:
+          - text: GitHub
+          - img [ref=e23]
+    - generic [ref=e25]:
+      - generic [ref=e27]:
+        - img
+        - textbox "搜索" [ref=e28]
+      - button "Display Settings" [ref=e29] [cursor=pointer]:
+        - img [ref=e30]
+      - menu [ref=e33]:
+        - menuitem "Light/Dark Mode" [ref=e34] [cursor=pointer]:
+          - img [ref=e357]
+          - img [ref=e360]
+          - img [ref=e363]
+        - generic:
+          - generic:
+            - button "亮色":
+              - img
+              - text: 亮色
+            - button "暗色":
+              - img
+              - text: 暗色
+            - button "跟随系统":
+              - img
+              - text: 跟随系统
+    - generic:
+      - link "主页":
+        - /url: /
+        - generic: 主页
+        - img
+      - link "归档":
+        - /url: /archive/
+        - generic: 归档
+        - img
+      - link "关于":
+        - /url: /about/
+        - generic: 关于
+        - img
+      - link "iPHX.io":
+        - /url: https://iphx.io
+        - generic: iPHX.io
+        - img
+      - link "GitHub":
+        - /url: https://github.com/wangver721
+        - generic: GitHub
+        - img
+    - generic [ref=e35]:
+      - generic:
+        - generic:
+          - generic:
+            - text: 主题色
+            - button "Reset to Default":
+              - generic:
+                - img
+          - generic:
+            - generic: "350"
+        - generic:
+          - slider "主题色": "350"
+  - img "Banner image of the blog" [ref=e38]
+  - generic [ref=e39]:
+    - generic [ref=e40]:
+      - generic [ref=e41]:
+        - generic [ref=e43]:
+          - link "Go to About Page" [ref=e44] [cursor=pointer]:
+            - /url: /about/
+            - generic:
+              - img
+            - img "Profile Image of the Author" [ref=e46]
+          - generic [ref=e47]:
+            - generic [ref=e48]: PHX
+            - generic [ref=e50]: 开发者 · 创业者 · IDC 与网络基础设施
+            - generic [ref=e51]:
+              - link "GitHub" [ref=e52] [cursor=pointer]:
+                - /url: https://github.com/wangver721
+                - img [ref=e53]
+              - link "Telegram" [ref=e55] [cursor=pointer]:
+                - /url: https://t.me/PHX_poster
+                - img [ref=e56]
+              - link "iPHX.io" [ref=e58] [cursor=pointer]:
+                - /url: https://iphx.io
+                - img [ref=e59]
+              - link "RSS" [ref=e61] [cursor=pointer]:
+                - /url: /rss.xml
+                - img [ref=e62]
+              - link "Email" [ref=e64] [cursor=pointer]:
+                - /url: mailto:hi@iphx.io
+                - img [ref=e65]
+        - generic [ref=e67]:
+          - generic [ref=e68]:
+            - generic [ref=e69]: 分类
+            - generic [ref=e70]:
+              - link "View all posts in the 随笔 category" [ref=e71] [cursor=pointer]:
+                - /url: /archive/?category=%E9%9A%8F%E7%AC%94
+                - button "随笔 1" [ref=e72]:
+                  - generic [ref=e73]:
+                    - generic [ref=e74]: 随笔
+                    - generic [ref=e75]: "1"
+              - link "View all posts in the Examples category" [ref=e76] [cursor=pointer]:
+                - /url: /archive/?category=Examples
+                - button "Examples 5" [ref=e77]:
+                  - generic [ref=e78]:
+                    - generic [ref=e79]: Examples
+                    - generic [ref=e80]: "5"
+              - link "View all posts in the Guides category" [ref=e81] [cursor=pointer]:
+                - /url: /archive/?category=Guides
+                - button "Guides 1" [ref=e82]:
+                  - generic [ref=e83]:
+                    - generic [ref=e84]: Guides
+                    - generic [ref=e85]: "1"
+          - generic [ref=e86]:
+            - generic [ref=e87]: 标签
+            - generic [ref=e89]:
+              - link "View all posts with the 建站 tag" [ref=e90] [cursor=pointer]:
+                - /url: /archive/?tag=%E5%BB%BA%E7%AB%99
+                - text: 建站
+              - link "View all posts with the 杂记 tag" [ref=e91] [cursor=pointer]:
+                - /url: /archive/?tag=%E6%9D%82%E8%AE%B0
+                - text: 杂记
+              - link "View all posts with the Blogging tag" [ref=e92] [cursor=pointer]:
+                - /url: /archive/?tag=Blogging
+                - text: Blogging
+              - link "View all posts with the Customization tag" [ref=e93] [cursor=pointer]:
+                - /url: /archive/?tag=Customization
+                - text: Customization
+              - link "View all posts with the Demo tag" [ref=e94] [cursor=pointer]:
+                - /url: /archive/?tag=Demo
+                - text: Demo
+              - link "View all posts with the Example tag" [ref=e95] [cursor=pointer]:
+                - /url: /archive/?tag=Example
+                - text: Example
+              - link "View all posts with the Fuwari tag" [ref=e96] [cursor=pointer]:
+                - /url: /archive/?tag=Fuwari
+                - text: Fuwari
+              - link "View all posts with the Markdown tag" [ref=e97] [cursor=pointer]:
+                - /url: /archive/?tag=Markdown
+                - text: Markdown
+              - link "View all posts with the Video tag" [ref=e98] [cursor=pointer]:
+                - /url: /archive/?tag=Video
+                - text: Video
+      - main [ref=e99]:
+        - generic [ref=e100]:
+          - generic [ref=e101]:
+            - generic [ref=e102]:
+              - generic [ref=e103]:
+                - link "你好，世界" [ref=e104] [cursor=pointer]:
+                  - /url: /posts/hello-world/
+                  - text: 你好，世界
+                  - img [ref=e105]
+                - generic [ref=e107]:
+                  - generic [ref=e108]:
+                    - img [ref=e110]
+                    - generic [ref=e112]: 2026-05-03
+                  - generic [ref=e113]:
+                    - img [ref=e115]
+                    - link "View all posts in the 随笔 category" [ref=e118] [cursor=pointer]:
+                      - /url: /archive/?category=%E9%9A%8F%E7%AC%94
+                      - text: 随笔
+                  - generic [ref=e119]:
+                    - img [ref=e121]
+                    - generic [ref=e123]:
+                      - link "View all posts with the 杂记 tag" [ref=e124] [cursor=pointer]:
+                        - /url: /archive/?tag=%E6%9D%82%E8%AE%B0
+                        - text: 杂记
+                      - generic [ref=e125]: /
+                      - link "View all posts with the 建站 tag" [ref=e126] [cursor=pointer]:
+                        - /url: /archive/?tag=%E5%BB%BA%E7%AB%99
+                        - text: 建站
+                - generic [ref=e127]: 博客上线啦！这是一篇示例文章，展示 Markdown 语法、代码块、目录、暗黑模式与评论功能。
+                - generic [ref=e128]:
+                  - generic [ref=e129]: 346 字
+                  - generic [ref=e130]: "|"
+                  - generic [ref=e131]: 2 分钟
+              - link "你好，世界" [ref=e132] [cursor=pointer]:
+                - /url: /posts/hello-world/
+                - img [ref=e133]
+            - generic [ref=e135]:
+              - generic [ref=e136]:
+                - link "Markdown Extended Features" [ref=e137] [cursor=pointer]:
+                  - /url: /posts/markdown-extended/
+                  - text: Markdown Extended Features
+                  - img [ref=e138]
+                - generic [ref=e140]:
+                  - generic [ref=e141]:
+                    - img [ref=e143]
+                    - generic [ref=e145]: 2024-05-01
+                  - generic [ref=e146]:
+                    - img [ref=e148]
+                    - link "View all posts in the Examples category" [ref=e151] [cursor=pointer]:
+                      - /url: /archive/?category=Examples
+                      - text: Examples
+                  - generic [ref=e152]:
+                    - img [ref=e154]
+                    - generic [ref=e156]:
+                      - link "View all posts with the Demo tag" [ref=e157] [cursor=pointer]:
+                        - /url: /archive/?tag=Demo
+                        - text: Demo
+                      - generic [ref=e158]: /
+                      - link "View all posts with the Example tag" [ref=e159] [cursor=pointer]:
+                        - /url: /archive/?tag=Example
+                        - text: Example
+                      - generic [ref=e160]: /
+                      - link "View all posts with the Markdown tag" [ref=e161] [cursor=pointer]:
+                        - /url: /archive/?tag=Markdown
+                        - text: Markdown
+                      - generic [ref=e162]: /
+                      - link "View all posts with the Fuwari tag" [ref=e163] [cursor=pointer]:
+                        - /url: /archive/?tag=Fuwari
+                        - text: Fuwari
+                - generic [ref=e164]: Read more about Markdown features in Fuwari
+                - generic [ref=e165]:
+                  - generic [ref=e166]: 176 字
+                  - generic [ref=e167]: "|"
+                  - generic [ref=e168]: 1 分钟
+              - link "Markdown Extended Features" [ref=e169] [cursor=pointer]:
+                - /url: /posts/markdown-extended/
+                - img [ref=e170]
+            - generic [ref=e172]:
+              - generic [ref=e173]:
+                - link "Expressive Code Example" [ref=e174] [cursor=pointer]:
+                  - /url: /posts/expressive-code/
+                  - text: Expressive Code Example
+                  - img [ref=e175]
+                - generic [ref=e177]:
+                  - generic [ref=e178]:
+                    - img [ref=e180]
+                    - generic [ref=e182]: 2024-04-10
+                  - generic [ref=e183]:
+                    - img [ref=e185]
+                    - link "View all posts in the Examples category" [ref=e188] [cursor=pointer]:
+                      - /url: /archive/?category=Examples
+                      - text: Examples
+                  - generic [ref=e189]:
+                    - img [ref=e191]
+                    - generic [ref=e193]:
+                      - link "View all posts with the Markdown tag" [ref=e194] [cursor=pointer]:
+                        - /url: /archive/?tag=Markdown
+                        - text: Markdown
+                      - generic [ref=e195]: /
+                      - link "View all posts with the Blogging tag" [ref=e196] [cursor=pointer]:
+                        - /url: /archive/?tag=Blogging
+                        - text: Blogging
+                      - generic [ref=e197]: /
+                      - link "View all posts with the Demo tag" [ref=e198] [cursor=pointer]:
+                        - /url: /archive/?tag=Demo
+                        - text: Demo
+                - generic [ref=e199]: How code blocks look in Markdown using Expressive Code.
+                - generic [ref=e200]:
+                  - generic [ref=e201]: 737 字
+                  - generic [ref=e202]: "|"
+                  - generic [ref=e203]: 4 分钟
+              - link "Expressive Code Example" [ref=e204] [cursor=pointer]:
+                - /url: /posts/expressive-code/
+                - img [ref=e205]
+            - generic [ref=e207]:
+              - generic [ref=e208]:
+                - link "Simple Guides for Fuwari" [ref=e209] [cursor=pointer]:
+                  - /url: /posts/guide/
+                  - text: Simple Guides for Fuwari
+                  - img [ref=e210]
+                - generic [ref=e212]:
+                  - generic [ref=e213]:
+                    - img [ref=e215]
+                    - generic [ref=e217]: 2024-04-01
+                  - generic [ref=e218]:
+                    - img [ref=e220]
+                    - link "View all posts in the Guides category" [ref=e223] [cursor=pointer]:
+                      - /url: /archive/?category=Guides
+                      - text: Guides
+                  - generic [ref=e224]:
+                    - img [ref=e226]
+                    - generic [ref=e228]:
+                      - link "View all posts with the Fuwari tag" [ref=e229] [cursor=pointer]:
+                        - /url: /archive/?tag=Fuwari
+                        - text: Fuwari
+                      - generic [ref=e230]: /
+                      - link "View all posts with the Blogging tag" [ref=e231] [cursor=pointer]:
+                        - /url: /archive/?tag=Blogging
+                        - text: Blogging
+                      - generic [ref=e232]: /
+                      - link "View all posts with the Customization tag" [ref=e233] [cursor=pointer]:
+                        - /url: /archive/?tag=Customization
+                        - text: Customization
+                - generic [ref=e234]: How to use this blog template.
+                - generic [ref=e235]:
+                  - generic [ref=e236]: 160 字
+                  - generic [ref=e237]: "|"
+                  - generic [ref=e238]: 1 分钟
+              - link "Simple Guides for Fuwari" [ref=e239] [cursor=pointer]:
+                - /url: /posts/guide/
+                - generic:
+                  - img
+                - img "Cover Image of the Post" [ref=e241]
+            - generic [ref=e242]:
+              - generic [ref=e243]:
+                - link "Markdown Example" [ref=e244] [cursor=pointer]:
+                  - /url: /posts/markdown/
+                  - text: Markdown Example
+                  - img [ref=e245]
+                - generic [ref=e247]:
+                  - generic [ref=e248]:
+                    - img [ref=e250]
+                    - generic [ref=e252]: 2023-10-01
+                  - generic [ref=e253]:
+                    - img [ref=e255]
+                    - link "View all posts in the Examples category" [ref=e258] [cursor=pointer]:
+                      - /url: /archive/?category=Examples
+                      - text: Examples
+                  - generic [ref=e259]:
+                    - img [ref=e261]
+                    - generic [ref=e263]:
+                      - link "View all posts with the Markdown tag" [ref=e264] [cursor=pointer]:
+                        - /url: /archive/?tag=Markdown
+                        - text: Markdown
+                      - generic [ref=e265]: /
+                      - link "View all posts with the Blogging tag" [ref=e266] [cursor=pointer]:
+                        - /url: /archive/?tag=Blogging
+                        - text: Blogging
+                      - generic [ref=e267]: /
+                      - link "View all posts with the Demo tag" [ref=e268] [cursor=pointer]:
+                        - /url: /archive/?tag=Demo
+                        - text: Demo
+                - generic [ref=e269]: A simple example of a Markdown blog post.
+                - generic [ref=e270]:
+                  - generic [ref=e271]: 444 字
+                  - generic [ref=e272]: "|"
+                  - generic [ref=e273]: 2 分钟
+              - link "Markdown Example" [ref=e274] [cursor=pointer]:
+                - /url: /posts/markdown/
+                - img [ref=e275]
+            - generic [ref=e277]:
+              - generic [ref=e278]:
+                - link "Include Video in the Posts" [ref=e279] [cursor=pointer]:
+                  - /url: /posts/video/
+                  - text: Include Video in the Posts
+                  - img [ref=e280]
+                - generic [ref=e282]:
+                  - generic [ref=e283]:
+                    - img [ref=e285]
+                    - generic [ref=e287]: 2023-08-01
+                  - generic [ref=e288]:
+                    - img [ref=e290]
+                    - link "View all posts in the Examples category" [ref=e293] [cursor=pointer]:
+                      - /url: /archive/?category=Examples
+                      - text: Examples
+                  - generic [ref=e294]:
+                    - img [ref=e296]
+                    - generic [ref=e298]:
+                      - link "View all posts with the Example tag" [ref=e299] [cursor=pointer]:
+                        - /url: /archive/?tag=Example
+                        - text: Example
+                      - generic [ref=e300]: /
+                      - link "View all posts with the Video tag" [ref=e301] [cursor=pointer]:
+                        - /url: /archive/?tag=Video
+                        - text: Video
+                - generic [ref=e302]: This post demonstrates how to include embedded video in a blog post.
+                - generic [ref=e303]:
+                  - generic [ref=e304]: 61 字
+                  - generic [ref=e305]: "|"
+                  - generic [ref=e306]: 1 分钟
+              - link "Include Video in the Posts" [ref=e307] [cursor=pointer]:
+                - /url: /posts/video/
+                - img [ref=e308]
+            - generic [ref=e310]:
+              - generic [ref=e311]:
+                - link "Draft Example" [ref=e312] [cursor=pointer]:
+                  - /url: /posts/draft/
+                  - text: Draft Example
+                  - img [ref=e313]
+                - generic [ref=e315]:
+                  - generic [ref=e316]:
+                    - img [ref=e318]
+                    - generic [ref=e320]: 2022-07-01
+                  - generic [ref=e321]:
+                    - img [ref=e323]
+                    - link "View all posts in the Examples category" [ref=e326] [cursor=pointer]:
+                      - /url: /archive/?category=Examples
+                      - text: Examples
+                  - generic [ref=e327]:
+                    - img [ref=e329]
+                    - generic [ref=e331]:
+                      - link "View all posts with the Markdown tag" [ref=e332] [cursor=pointer]:
+                        - /url: /archive/?tag=Markdown
+                        - text: Markdown
+                      - generic [ref=e333]: /
+                      - link "View all posts with the Blogging tag" [ref=e334] [cursor=pointer]:
+                        - /url: /archive/?tag=Blogging
+                        - text: Blogging
+                      - generic [ref=e335]: /
+                      - link "View all posts with the Demo tag" [ref=e336] [cursor=pointer]:
+                        - /url: /archive/?tag=Demo
+                        - text: Demo
+                - generic [ref=e337]: This article is currently in a draft state and is not published. Therefore, it will not be visible to the general audience. The content is still a work in progress and may require further editing and review.
+                - generic [ref=e338]:
+                  - generic [ref=e339]: 72 字
+                  - generic [ref=e340]: "|"
+                  - generic [ref=e341]: 1 分钟
+              - link "Draft Example" [ref=e342] [cursor=pointer]:
+                - /url: /posts/draft/
+                - img [ref=e343]
+          - generic [ref=e345]:
+            - link:
+              - /url: ""
+              - img
+            - generic [ref=e347]: "1"
+            - link:
+              - /url: ""
+              - img
+          - generic [ref=e351]:
+            - text: © 2026 PHX. All Rights Reserved. /
+            - link "RSS" [ref=e352] [cursor=pointer]:
+              - /url: /rss.xml
+            - text: /
+            - link "Sitemap" [ref=e353] [cursor=pointer]:
+              - /url: /sitemap-index.xml
+            - text: Powered by
+            - link "Astro" [ref=e354] [cursor=pointer]:
+              - /url: https://astro.build
+            - text: "&"
+            - link "Fuwari" [ref=e355] [cursor=pointer]:
+              - /url: https://github.com/saicaca/fuwari
+    - generic:
+      - generic:
+        - button "Back to Top":
+          - img
+  - paragraph [ref=e365]
+  - generic [ref=e368]:
+    - button "Menu" [ref=e369]:
+      - img [ref=e371]
+      - generic: Menu
+    - button "Inspect" [ref=e375]:
+      - img [ref=e377]
+      - generic: Inspect
+    - button "Audit" [ref=e379]:
+      - generic [ref=e380]:
+        - img [ref=e381]
+        - img [ref=e384]
+      - generic: Audit
+    - button "Settings" [ref=e387]:
+      - img [ref=e389]
+      - generic: Settings
