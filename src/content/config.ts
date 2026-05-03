@@ -2,6 +2,9 @@ import { defineCollection, z } from "astro:content";
 
 const postsCollection = defineCollection({
 	schema: z.object({
+		// 文章短链编号：URL 末尾用这个数字，如 /posts/1/
+		// 必填，新文章用 `pnpm new-post` 命令时会自动分配
+		id: z.number().int().positive(),
 		title: z.string(),
 		published: z.date(),
 		updated: z.date().optional(),

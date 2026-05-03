@@ -17,8 +17,9 @@ import { formatDateToYYYYMMDD } from "../../utils/date-utils";
 
 export async function getStaticPaths() {
 	const blogEntries = await getSortedPosts();
+	// URL 用 frontmatter.id 而不是文件名 slug，最终形如 /posts/1/、/posts/2/
 	return blogEntries.map((entry) => ({
-		params: { slug: entry.slug },
+		params: { slug: String(entry.data.id) },
 		props: { entry },
 	}));
 }

@@ -2,14 +2,14 @@
  * 新建博客文章脚手架（PHX 简化版）
  *
  * 用法：
- *   pnpm new-post 标题                  # 不带封面：生成单文件 src/content/posts/标题.md
- *   pnpm new-post 标题 --cover          # 带封面：生成子目录 src/content/posts/标题/index.md
+ *   pnpm new-post 标题                  # 不带封面：生成 src/content/posts/标题.md
+ *   pnpm new-post 标题 --cover          # 带封面：生成 src/content/posts/标题/index.md
  *                                         同时占位 cover.jpg（你需要替换为真实图片）
  *
- * 说明：
- *  - frontmatter 只保留 title / published / description（image 仅在 --cover 时出现）
- *  - 分类与标签已被全站关闭，不再生成
- *  - 文件名建议英文小写、连字符分隔（中文也支持但 URL 会被 encode）
+ * 自动行为：
+ *  - frontmatter 自动分配数字 id（扫描已有文章取最大 id + 1），URL 形如 /posts/N/
+ *  - frontmatter 只保留 id / title / published / description（image 仅在 --cover 时出现）
+ *  - 文件名建议英文小写、连字符分隔（中文也支持但 URL 不受影响，因为 URL 走的是 id）
  */
 
 import fs from "node:fs";
@@ -21,6 +21,40 @@ function getDate() {
 	const m = String(today.getMonth() + 1).padStart(2, "0");
 	const d = String(today.getDate()).padStart(2, "0");
 	return `${y}-${m}-${d}`;
+}
+
+/**
+ * 扫描 src/content/posts/ 下所有 .md / .mdx，从 frontmatter 提取 id，返回当前最大值。
+ * 若一篇都没有，返回 0（下一篇分配 1）。
+ */
+function getCurrentMaxId(postsDir) {
+	if (!fs.existsSync(postsDir)) return 0;
+
+	let maxId = 0;
+	const idRegex = /^id:\s*(\d+)\s*$/m;
+
+	const walk = (dir) => {
+		for (const name of fs.readdirSync(dir)) {
+			const full = path.join(dir, name);
+			const stat = fs.statSync(full);
+			if (stat.isDirectory()) {
+				walk(full);
+			} else if (/\.(md|mdx)$/i.test(name)) {
+				const text = fs.readFileSync(full, "utf-8");
+				// 只读 frontmatter 部分（最前面的 --- ... ---）
+				const fm = text.match(/^---\s*\n([\s\S]*?)\n---/);
+				if (!fm) continue;
+				const match = fm[1].match(idRegex);
+				if (match) {
+					const n = Number.parseInt(match[1], 10);
+					if (Number.isFinite(n) && n > maxId) maxId = n;
+				}
+			}
+		}
+	};
+
+	walk(postsDir);
+	return maxId;
 }
 
 const argv = process.argv.slice(2);
@@ -37,12 +71,12 @@ if (positional.length === 0) {
 
 const slug = positional[0].replace(/\.(md|mdx)$/i, "");
 const targetDir = path.resolve("src/content/posts");
+const newId = getCurrentMaxId(targetDir) + 1;
 
 let outFile;
 let coverHint = "";
 
 if (withCover) {
-	// 子目录模式：src/content/posts/<slug>/index.md + cover.jpg
 	const dir = path.join(targetDir, slug);
 	if (fs.existsSync(dir)) {
 		console.error(`错误：目录已存在 ${dir}`);
@@ -50,12 +84,10 @@ if (withCover) {
 	}
 	fs.mkdirSync(dir, { recursive: true });
 	outFile = path.join(dir, "index.md");
-	// 留一个空 cover.jpg 占位（0 字节）提醒你替换
 	const placeholder = path.join(dir, "cover.jpg");
 	fs.writeFileSync(placeholder, "");
-	coverHint = `\n📸 封面图占位：${placeholder}\n   请用你的真实封面替换它（建议 16:9 横图，最少 1200×675）`;
+	coverHint = `\n📸 封面图占位：${placeholder}\n   请用你的真实封面替换它（建议 16:9 横图，至少 1200×675）`;
 } else {
-	// 单文件模式
 	outFile = path.join(targetDir, `${slug}.md`);
 	if (fs.existsSync(outFile)) {
 		console.error(`错误：文件已存在 ${outFile}`);
@@ -65,6 +97,7 @@ if (withCover) {
 
 const frontmatter = withCover
 	? `---
+id: ${newId}
 title: ${positional[0]}
 published: ${getDate()}
 description: ''
@@ -73,6 +106,7 @@ image: ./cover.jpg
 
 `
 	: `---
+id: ${newId}
 title: ${positional[0]}
 published: ${getDate()}
 description: ''
@@ -82,5 +116,9 @@ description: ''
 
 fs.writeFileSync(outFile, frontmatter);
 
-console.log(`✅ 已创建：${outFile}${coverHint}`);
-console.log(`\n下一步：编辑文件 → git add . && git commit -m "post: ${positional[0]}" && git push`);
+console.log(`✅ 已创建：${outFile}`);
+console.log(`🔗 上线后 URL：/posts/${newId}/`);
+if (coverHint) console.log(coverHint);
+console.log(
+	`\n下一步：编辑文件 → git add . && git commit -m "post: ${positional[0]}" && git push`,
+);

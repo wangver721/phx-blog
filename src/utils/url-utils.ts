@@ -12,8 +12,15 @@ function joinUrl(...parts: string[]): string {
 	return joined.replace(/\/+/g, "/");
 }
 
-export function getPostUrlBySlug(slug: string): string {
-	return url(`/posts/${slug}/`);
+// 文章 URL 构造：/posts/{id}/
+// 注：函数名保留 BySlug 是为了减少调用方改动，实际入参是数字 id（也接受字符串以便兼容历史调用）
+export function getPostUrlBySlug(idOrSlug: string | number): string {
+	return url(`/posts/${idOrSlug}/`);
+}
+
+// 显式按 id 取 URL（推荐新代码使用）
+export function getPostUrlById(id: number | string): string {
+	return url(`/posts/${id}/`);
 }
 
 export function getTagUrl(tag: string): string {

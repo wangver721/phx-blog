@@ -20,27 +20,28 @@ async function getRawSortedPosts() {
 export async function getSortedPosts() {
 	const sorted = await getRawSortedPosts();
 
+	// 上一篇/下一篇用 id（数字字符串）替代文件名 slug
 	for (let i = 1; i < sorted.length; i++) {
-		sorted[i].data.nextSlug = sorted[i - 1].slug;
+		sorted[i].data.nextSlug = String(sorted[i - 1].data.id);
 		sorted[i].data.nextTitle = sorted[i - 1].data.title;
 	}
 	for (let i = 0; i < sorted.length - 1; i++) {
-		sorted[i].data.prevSlug = sorted[i + 1].slug;
+		sorted[i].data.prevSlug = String(sorted[i + 1].data.id);
 		sorted[i].data.prevTitle = sorted[i + 1].data.title;
 	}
 
 	return sorted;
 }
 export type PostForList = {
-	slug: string;
+	slug: string; // 这里 slug 实际上存的是 String(id)，保持字段名是为了兼容 ArchivePanel 的 svelte 组件
 	data: CollectionEntry<"posts">["data"];
 };
 export async function getSortedPostsList(): Promise<PostForList[]> {
 	const sortedFullPosts = await getRawSortedPosts();
 
-	// delete post.body
+	// delete post.body；slug 字段使用文章 id（短链编号）
 	const sortedPostsList = sortedFullPosts.map((post) => ({
-		slug: post.slug,
+		slug: String(post.data.id),
 		data: post.data,
 	}));
 
