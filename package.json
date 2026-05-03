@@ -12,9 +12,15 @@
     "type-check": "tsc --noEmit --isolatedDeclarations",
     "new-post": "node scripts/new-post.js",
     "build-favicon": "node scripts/build-favicon.mjs",
+    "fix-images": "node scripts/process-images.mjs",
+    "fix-images:dry": "node scripts/process-images.mjs --dry-run",
     "format": "biome format --write ./src",
     "lint": "biome check --write ./src",
-    "preinstall": "npx only-allow pnpm"
+    "preinstall": "npx only-allow pnpm",
+    "postinstall": "simple-git-hooks"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "node scripts/process-images.mjs --from-hook"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.6",
@@ -72,7 +78,8 @@
     "@types/mdast": "^4.0.4",
     "@types/sanitize-html": "^2.16.0",
     "postcss-import": "^16.1.1",
-    "postcss-nesting": "^13.0.2"
+    "postcss-nesting": "^13.0.2",
+    "simple-git-hooks": "^2.13.1"
   },
   "packageManager": "pnpm@9.14.4"
 }
