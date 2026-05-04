@@ -2,40 +2,33 @@
 
 @layer components {
     .card-base {
-        /* 毛玻璃主卡片：更高透 + 更强模糊 + 玻璃边缘高光 */
+        /* 毛玻璃主卡片：半透明底色 + 背景模糊 + 边缘高光 + 柔和阴影 */
         @apply rounded-[var(--radius-large)] overflow-hidden bg-[var(--card-bg)] transition;
-        backdrop-filter: blur(28px) saturate(170%);
-        -webkit-backdrop-filter: blur(28px) saturate(170%);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
         box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.24),
-            inset 0 -1px 0 rgba(255, 255, 255, 0.06),
-            0 1px 2px rgba(0, 0, 0, 0.04),
-            0 10px 30px -10px rgba(0, 0, 0, 0.14);
-        border: 1px solid rgba(255, 255, 255, 0.10);
+            0 8px 32px 0 rgba(0, 0, 0, 0.10);
+        border: 1px solid rgba(255, 255, 255, 0.40);
     }
     :root.dark .card-base {
+        /* 深色模式下保持玻璃感，但避免边框过亮刺眼 */
         box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.10),
-            inset 0 -1px 0 rgba(255, 255, 255, 0.04),
-            0 1px 2px rgba(0, 0, 0, 0.30),
-            0 12px 36px -10px rgba(0, 0, 0, 0.52);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+            0 8px 32px 0 rgba(0, 0, 0, 0.35);
+        border: 1px solid rgba(255, 255, 255, 0.18);
     }
     /* 浮动面板（搜索/主题选择/导航菜单） */
     .float-panel {
         @apply top-[5.25rem] rounded-[var(--radius-large)] overflow-hidden bg-[var(--float-panel-bg)] transition;
-        backdrop-filter: blur(20px) saturate(160%);
-        -webkit-backdrop-filter: blur(20px) saturate(160%);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
         box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.20),
-            0 14px 40px -8px rgba(0, 0, 0, 0.24);
-        border: 1px solid rgba(255, 255, 255, 0.10);
+            0 8px 32px 0 rgba(0, 0, 0, 0.10);
+        border: 1px solid rgba(255, 255, 255, 0.40);
     }
     :root.dark .float-panel {
         box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.10),
-            0 14px 44px -8px rgba(0, 0, 0, 0.56);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+            0 8px 32px 0 rgba(0, 0, 0, 0.35);
+        border: 1px solid rgba(255, 255, 255, 0.18);
     }
     h1, h2, h3, h4, h5, h6, p, a, span, li, ul, ol, blockquote, code, pre, table, th, td, strong {
         @apply transition;
