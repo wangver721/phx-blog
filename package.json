@@ -11,6 +11,7 @@
     "astro": "astro",
     "type-check": "tsc --noEmit --isolatedDeclarations",
     "new-post": "node scripts/new-post.js",
+    "studio": "node scripts/blog-studio.mjs",
     "build-favicon": "node scripts/build-favicon.mjs",
     "fix-images": "node scripts/process-images.mjs",
     "fix-images:dry": "node scripts/process-images.mjs --dry-run",
