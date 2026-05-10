@@ -4,10 +4,11 @@
  * 应用场景：
  *  在 Typora（或任意编辑器）里写文章，复制粘贴图片后会得到形如：
  *    ![image-20260503224219431](C:\Users\王先生\AppData\Roaming\Typora\typora-user-images\image-20260503224219431.png)
+ *    ![demo](C:\Users\王先生\AppData\Roaming\Typora\typora-user-images\demo.gif)
  *  push 后 CF Pages 找不到这个本地路径，会构建失败。
  *  本脚本扫描所有 .md / .mdx，把这种绝对路径图片：
  *    1. 复制到文章对应子目录（必要时把单 .md 自动迁移成 子目录/index.md 形式）
- *    2. 改写 markdown / html 引用为 ./image-xxx.png
+ *    2. 改写 markdown / html 引用为 ./image-xxx.png / ./demo.gif
  *
  * 用法：
  *   node scripts/process-images.mjs            # 处理所有文章
@@ -24,18 +25,25 @@ import path from "node:path";
 const POSTS_DIR = path.resolve("src/content/posts");
 const DRY_RUN = process.argv.includes("--dry-run");
 const FROM_HOOK = process.argv.includes("--from-hook");
+const IMAGE_EXTENSIONS = "png|jpe?g|gif|webp|svg|bmp";
 
 // 匹配 Markdown 图片：![alt](路径)
 //   路径形式：
-//     C:\Users\xxx\foo.png  或  C:/Users/xxx/foo.png   （Windows 绝对路径）
-//     /Users/xxx/foo.png                                （macOS 绝对路径）
-//     file:///C:/Users/xxx/foo.png                      （file:// 协议）
-const MD_IMG_RE =
-	/!\[([^\]]*)\]\((file:\/\/\/[^)\s]+|[A-Za-z]:[\\/][^)\s]+|\/[A-Za-z][^)\s]*\.(?:png|jpe?g|gif|webp|svg|bmp))(?:\s+"[^"]*")?\)/gi;
+//     C:\Users\xxx\foo.gif  或  C:/Users/xxx/foo.gif   （Windows 绝对路径）
+//     /Users/xxx/foo.gif                                （macOS 绝对路径）
+//     file:///C:/Users/xxx/foo.gif                      （file:// 协议）
+// 支持 png / jpg / jpeg / gif / webp / svg / bmp。
+// 注意：路径中允许出现空格；用非贪婪匹配直到图片扩展名。
+const MD_IMG_RE = new RegExp(
+	String.raw`!\[([^\]]*)\]\((file:\/\/\/[^)\n]+?\.(?:${IMAGE_EXTENSIONS})|[A-Za-z]:[\\/][^)\n]+?\.(?:${IMAGE_EXTENSIONS})|\/[A-Za-z][^)\n]*?\.(?:${IMAGE_EXTENSIONS}))(?:\s+"[^"]*")?\)`,
+	"gi",
+);
 
 // 匹配 HTML <img src="路径" ...>
-const HTML_IMG_RE =
-	/<img\s+[^>]*src=["'](file:\/\/\/[^"']+|[A-Za-z]:[\\/][^"']+|\/[A-Za-z][^"']*\.(?:png|jpe?g|gif|webp|svg|bmp))["'][^>]*\/?>/gi;
+const HTML_IMG_RE = new RegExp(
+	String.raw`<img\s+[^>]*src=["'](file:\/\/\/[^"']+?\.(?:${IMAGE_EXTENSIONS})|[A-Za-z]:[\\/][^"']+?\.(?:${IMAGE_EXTENSIONS})|\/[A-Za-z][^"']*?\.(?:${IMAGE_EXTENSIONS}))["'][^>]*\/?>`,
+	"gi",
+);
 
 // 把 file:///C:/foo 或 C:\foo 标准化为 Windows 文件系统路径
 function normalizeAbsolutePath(p) {
@@ -61,13 +69,6 @@ function normalizeAbsolutePath(p) {
  */
 function collectImageRefs(content) {
 	const refs = [];
-	for (const m of content.matchAll(MD_IMG_RE)) {
-		refs.push({ kind: "md", rawMatch: m[0], captured: m[1], alt: m[1].startsWith("image-") ? m[1] : null });
-		// 上一行 alt 取错了，下面纠正：m[1] 才是 alt，m[2] 是路径——重新解析
-	}
-	// 上面正则 group 顺序：alt 是 group(1)，path 是 group(2)
-	// 重写一遍，保证正确
-	refs.length = 0;
 	for (const m of content.matchAll(MD_IMG_RE)) {
 		refs.push({
 			kind: "md",

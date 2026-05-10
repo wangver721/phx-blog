@@ -171,6 +171,24 @@ Typora 经常会生成这种路径：
 
 项目已经做了自动化处理：**每次 commit 前会自动扫描文章，把这种本地绝对路径图片复制到文章目录，并改成相对路径。**
 
+支持的图片类型：
+
+```text
+png / jpg / jpeg / gif / webp / svg / bmp
+```
+
+也就是说，GIF 和 PNG 一样会被自动转存。例如：
+
+```markdown
+![demo](C:\Users\王先生\AppData\Roaming\Typora\typora-user-images\demo.gif)
+```
+
+提交前会自动变成：
+
+```markdown
+![demo](./demo.gif)
+```
+
 例如原来是：
 
 ```markdown
