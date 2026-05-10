@@ -2,7 +2,6 @@ import sitemap from "@astrojs/sitemap";
 import svelte from "@astrojs/svelte";
 import tailwind from "@astrojs/tailwind";
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
-import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 import swup from "@swup/astro";
 import expressiveCode from "astro-expressive-code";
 import icon from "astro-icon";
@@ -59,7 +58,6 @@ export default defineConfig({
 			themes: [expressiveCodeConfig.theme, expressiveCodeConfig.theme],
 			plugins: [
 				pluginCollapsibleSections(),
-				pluginLineNumbers(),
 				pluginLanguageBadge(),
 				pluginCustomCopyButton()
 			],
@@ -73,8 +71,8 @@ export default defineConfig({
 			},
 			styleOverrides: {
 				codeBackground: "var(--codeblock-bg)",
-				borderRadius: "0.75rem",
-				borderColor: "none",
+				borderRadius: "1rem",
+				borderColor: "rgba(255, 255, 255, 0.10)",
 				codeFontSize: "0.875rem",
 				codeFontFamily: "'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
 				codeLineHeight: "1.5rem",
