@@ -16,21 +16,62 @@
     }
 
     .frame .header {
+        position: relative;
         min-height: 2.35rem !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important;
         background:
-            linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018)),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.025)),
             var(--codeblock-topbar-bg) !important;
+    }
+
+    .frame .header::before {
+        content: "";
+        position: absolute;
+        left: 0.95rem;
+        top: 50%;
+        width: 0.72rem;
+        height: 0.72rem;
+        border-radius: 999px;
+        transform: translateY(-50%);
+        background: #ff5f57;
+        box-shadow:
+            1.05rem 0 0 #ffbd2e,
+            2.1rem 0 0 #28c840;
+        opacity: 0.95;
+    }
+
+    .frame .header::after {
+        content: "";
+        position: absolute;
+        left: 0.95rem;
+        top: 50%;
+        width: 0.72rem;
+        height: 0.72rem;
+        border-radius: 999px;
+        transform: translateY(-50%);
+        box-shadow:
+            inset 0 0 0 1px rgba(0, 0, 0, 0.18),
+            1.05rem 0 0 rgba(0, 0, 0, 0),
+            2.1rem 0 0 rgba(0, 0, 0, 0);
+        pointer-events: none;
     }
 
     .frame .title {
         color: rgba(255, 255, 255, 0.58) !important;
         font-size: 0.78rem !important;
         letter-spacing: 0.02em;
+        margin-left: 3.55rem !important;
+    }
+
+    .frame:not(.has-title) .title::before,
+    .frame .title:empty::before {
+        content: "terminal";
+        color: rgba(255, 255, 255, 0.38);
+        font-weight: 600;
     }
 
     pre {
-        padding: 0.9rem 1rem !important;
+        padding: 1rem 1.05rem 1.05rem !important;
         background: transparent !important;
     }
 
@@ -48,7 +89,7 @@
     }
 
     .copy-btn {
-        top: 0.55rem !important;
+        top: 0.52rem !important;
         right: 0.55rem !important;
         opacity: 0.45;
         background: rgba(255, 255, 255, 0.08) !important;
