@@ -32,16 +32,17 @@ const IMAGE_EXTENSIONS = "png|jpe?g|gif|webp|svg|bmp";
 //     C:\Users\xxx\foo.gif  或  C:/Users/xxx/foo.gif   （Windows 绝对路径）
 //     /Users/xxx/foo.gif                                （macOS 绝对路径）
 //     file:///C:/Users/xxx/foo.gif                      （file:// 协议）
+//     https://example.com/foo.gif                       （远程图片，会下载转存）
 // 支持 png / jpg / jpeg / gif / webp / svg / bmp。
 // 注意：路径中允许出现空格；用非贪婪匹配直到图片扩展名。
 const MD_IMG_RE = new RegExp(
-	String.raw`!\[([^\]]*)\]\((file:\/\/\/[^)\n]+?\.(?:${IMAGE_EXTENSIONS})|[A-Za-z]:[\\/][^)\n]+?\.(?:${IMAGE_EXTENSIONS})|\/[A-Za-z][^)\n]*?\.(?:${IMAGE_EXTENSIONS}))(?:\s+"[^"]*")?\)`,
+	String.raw`!\[([^\]]*)\]\((https?:\/\/[^)\n]+?\.(?:${IMAGE_EXTENSIONS})|file:\/\/\/[^)\n]+?\.(?:${IMAGE_EXTENSIONS})|[A-Za-z]:[\\/][^)\n]+?\.(?:${IMAGE_EXTENSIONS})|\/[A-Za-z][^)\n]*?\.(?:${IMAGE_EXTENSIONS}))(?:\s+"[^"]*")?\)`,
 	"gi",
 );
 
 // 匹配 HTML <img src="路径" ...>
 const HTML_IMG_RE = new RegExp(
-	String.raw`<img\s+[^>]*src=["'](file:\/\/\/[^"']+?\.(?:${IMAGE_EXTENSIONS})|[A-Za-z]:[\\/][^"']+?\.(?:${IMAGE_EXTENSIONS})|\/[A-Za-z][^"']*?\.(?:${IMAGE_EXTENSIONS}))["'][^>]*\/?>`,
+	String.raw`<img\s+[^>]*src=["'](https?:\/\/[^"']+?\.(?:${IMAGE_EXTENSIONS})|file:\/\/\/[^"']+?\.(?:${IMAGE_EXTENSIONS})|[A-Za-z]:[\\/][^"']+?\.(?:${IMAGE_EXTENSIONS})|\/[A-Za-z][^"']*?\.(?:${IMAGE_EXTENSIONS})|\.\/[^"']+?\.(?:${IMAGE_EXTENSIONS}))["'][^>]*\/?>`,
 	"gi",
 );
 
@@ -78,14 +79,50 @@ function collectImageRefs(content) {
 		});
 	}
 	for (const m of content.matchAll(HTML_IMG_RE)) {
+		const alt = m[0].match(/\salt=["']([^"']*)["']/i)?.[1] || path.basename(m[1]);
 		refs.push({
 			kind: "html",
 			rawMatch: m[0],
-			alt: "",
+			alt,
 			captured: m[1],
 		});
 	}
 	return refs;
+}
+
+function isRemotePath(p) {
+	return /^https?:\/\//i.test(p);
+}
+
+function isAbsoluteLocalPath(p) {
+	return /^file:\/\//i.test(p) || /^[A-Za-z]:[\\/]/.test(p) || /^\/[A-Za-z]/.test(p);
+}
+
+function isRelativeArticlePath(p) {
+	return /^\.\//.test(p);
+}
+
+function fileNameFromUrl(url) {
+	const u = new URL(url);
+	const rawName = path.basename(decodeURIComponent(u.pathname));
+	if (rawName && /\.[a-z0-9]+$/i.test(rawName)) return rawName;
+	return `image-${Date.now()}.bin`;
+}
+
+async function downloadRemoteImage(url) {
+	const referer = new URL(url).origin + "/";
+	const response = await fetch(url, {
+		headers: {
+			accept: "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
+			referer,
+			"user-agent":
+				"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+		},
+	});
+	if (!response.ok) {
+		throw new Error(`下载失败 ${response.status}: ${url}`);
+	}
+	return Buffer.from(await response.arrayBuffer());
 }
 
 /**
@@ -111,15 +148,20 @@ function migrateToSubdirectory(mdPath) {
 /**
  * 处理单个 .md 文件，返回 { changed, migrated, copies, newPath }
  */
-function processOne(mdPath) {
+async function processOne(mdPath) {
 	const original = fs.readFileSync(mdPath, "utf-8");
 	const refs = collectImageRefs(original);
-	const absoluteRefs = refs.filter((r) => {
+	const processableRefs = refs.filter((r) => {
 		const p = r.captured;
-		return /^file:\/\/\//.test(p) || /^[A-Za-z]:[\\/]/.test(p) || /^\/[A-Za-z]/.test(p);
+		return (
+			isRemotePath(p) ||
+			isAbsoluteLocalPath(p) ||
+			// raw HTML 相对图不会被 Astro 当内容资源处理，统一转成 Markdown 图片。
+			(r.kind === "html" && isRelativeArticlePath(p))
+		);
 	});
 
-	if (absoluteRefs.length === 0) {
+	if (processableRefs.length === 0) {
 		return { changed: false, migrated: false, copies: [], newPath: mdPath };
 	}
 
@@ -145,42 +187,61 @@ function processOne(mdPath) {
 	const copies = [];
 	const failed = [];
 
-	for (const ref of absoluteRefs) {
-		const srcAbs = normalizeAbsolutePath(ref.captured);
-		if (!fs.existsSync(srcAbs)) {
-			failed.push({ ref, reason: "源图不存在" });
-			console.warn(`  ✗ 源图不存在：${srcAbs}`);
-			continue;
+	for (const ref of processableRefs) {
+		let sourceBuffer = null;
+		let filename = "";
+		let sourceLabel = ref.captured;
+
+		if (isRelativeArticlePath(ref.captured)) {
+			// HTML 相对图只需要转 Markdown，不复制文件。
+			filename = path.basename(ref.captured);
+		} else if (isRemotePath(ref.captured)) {
+			try {
+				sourceBuffer = await downloadRemoteImage(ref.captured);
+				filename = fileNameFromUrl(ref.captured);
+			} catch (error) {
+				failed.push({ ref, reason: error.message });
+				console.warn(`  ✗ ${error.message}`);
+				continue;
+			}
+		} else {
+			const srcAbs = normalizeAbsolutePath(ref.captured);
+			sourceLabel = srcAbs;
+			if (!fs.existsSync(srcAbs)) {
+				failed.push({ ref, reason: "源图不存在" });
+				console.warn(`  ✗ 源图不存在：${srcAbs}`);
+				continue;
+			}
+			sourceBuffer = fs.readFileSync(srcAbs);
+			filename = path.basename(srcAbs);
 		}
 
-		const filename = path.basename(srcAbs);
 		const dest = path.join(articleDir, filename);
 
 		// 如果目标已存在但不一样，加时间戳避免覆盖
 		let finalDest = dest;
-		if (fs.existsSync(dest)) {
-			const a = fs.readFileSync(srcAbs);
+		if (sourceBuffer && fs.existsSync(dest)) {
 			const b = fs.readFileSync(dest);
-			if (!a.equals(b)) {
+			if (!sourceBuffer.equals(b)) {
 				const ext = path.extname(filename);
 				const stem = path.basename(filename, ext);
 				finalDest = path.join(articleDir, `${stem}-${Date.now()}${ext}`);
 			}
 		}
 
-		if (!DRY_RUN) {
-			fs.copyFileSync(srcAbs, finalDest);
+		if (sourceBuffer && !DRY_RUN) {
+			fs.writeFileSync(finalDest, sourceBuffer);
+			copies.push({ from: sourceLabel, to: finalDest });
 		}
-		copies.push({ from: srcAbs, to: finalDest });
 
 		const relPath = `./${path.basename(finalDest)}`;
 		// 替换原引用
 		const replaced =
 			ref.kind === "md"
 				? `![${ref.alt}](${relPath})`
-				: ref.rawMatch.replace(ref.captured, relPath);
+				: `\n![${ref.alt}](${relPath})\n`;
 		updated = updated.split(ref.rawMatch).join(replaced);
-		console.log(`  ✓ ${path.basename(srcAbs)} → ${path.relative(POSTS_DIR, finalDest)}`);
+		console.log(`  ✓ ${filename} → ${path.relative(POSTS_DIR, finalDest)}`);
 	}
 
 	if (!DRY_RUN && updated !== fs.readFileSync(workingPath, "utf-8")) {
@@ -224,7 +285,7 @@ let totalMigrated = 0;
 const newFilesToStage = [];
 
 for (const file of files) {
-	const result = processOne(file);
+	const result = await processOne(file);
 	if (result.changed) {
 		totalChanged++;
 		if (result.migrated) totalMigrated++;
