@@ -69,7 +69,14 @@ if (positional.length === 0) {
 	process.exit(1);
 }
 
-const slug = positional[0].replace(/\.(md|mdx)$/i, "");
+// Windows / PowerShell / CMD 会按空格拆分参数。
+// 因此这里把所有位置参数重新拼回完整标题，避免 `pnpm new-post 我的 标题`
+// 只识别成 `我的`。
+//
+// 注意：英文半角引号 "..." 会被命令行本身吃掉；如果标题中要保留引号，
+// 请使用中文引号 “...”，或在 PowerShell 中用单引号包住整段标题。
+const title = positional.join(" ").trim();
+const slug = title.replace(/\.(md|mdx)$/i, "");
 const targetDir = path.resolve("src/content/posts");
 const newId = getCurrentMaxId(targetDir) + 1;
 
@@ -98,7 +105,7 @@ if (withCover) {
 const frontmatter = withCover
 	? `---
 id: ${newId}
-title: ${positional[0]}
+title: ${title}
 published: ${getDate()}
 description: ''
 image: ./cover.jpg
@@ -107,7 +114,7 @@ image: ./cover.jpg
 `
 	: `---
 id: ${newId}
-title: ${positional[0]}
+title: ${title}
 published: ${getDate()}
 description: ''
 ---
@@ -120,5 +127,5 @@ console.log(`✅ 已创建：${outFile}`);
 console.log(`🔗 上线后 URL：/posts/${newId}/`);
 if (coverHint) console.log(coverHint);
 console.log(
-	`\n下一步：编辑文件 → git add . && git commit -m "post: ${positional[0]}" && git push`,
+	`\n下一步：编辑文件 → git add . && git commit -m "post: ${title}" && git push`,
 );
