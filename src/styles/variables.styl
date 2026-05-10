@@ -23,8 +23,9 @@ define(vars)
         {key}: value[1]
 
 define({
-  --primary: oklch(0.70 0.14 var(--hue)) oklch(0.75 0.14 var(--hue))
-  --page-bg: oklch(0.95 0.01 var(--hue)) oklch(0.16 0.014 var(--hue))
+  --primary: oklch(0.62 0.16 var(--hue)) oklch(0.78 0.14 var(--hue))
+  /* 页面底色：浅色更明亮干净，深色更深以拉开与卡片的层次 */
+  --page-bg: oklch(0.97 0.008 var(--hue)) oklch(0.135 0.018 var(--hue))
   /* 毛玻璃底色：亮色参考 rgba(255,255,255,0.25) 的经典配比 */
   --card-bg: s('rgba(255, 255, 255, 0.25)') s('oklch(0.18 0.020 var(--hue) / 0.40)')
 
@@ -44,14 +45,14 @@ define({
   --enter-btn-bg-hover: var(--btn-regular-bg-hover)
   --enter-btn-bg-active: var(--btn-regular-bg-active)
 
-  --deep-text: oklch(0.25 0.02 var(--hue))
+  --deep-text: oklch(0.20 0.020 var(--hue)) oklch(0.96 0.010 var(--hue))
 
-  --title-active: oklch(0.6 0.1 var(--hue))
+  --title-active: oklch(0.55 0.12 var(--hue)) oklch(0.78 0.14 var(--hue))
 
-  --line-divider: black(0.08) white(0.08)
+  --line-divider: black(0.10) white(0.12)
 
-  --line-color: black(0.1) white(0.1)
-  --meta-divider: black(0.2) white(0.2)
+  --line-color: black(0.12) white(0.14)
+  --meta-divider: black(0.28) white(0.28)
 
   --inline-code-bg: var(--btn-regular-bg)
   --inline-code-color: var(--btn-content)

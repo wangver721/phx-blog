@@ -1,6 +1,39 @@
 .custom-md {
+    /* === 排版基础：覆盖 Tailwind Typography 变量，提升对比度与中文阅读节奏 === */
+    --tw-prose-body: oklch(0.26 0.020 var(--hue));
+    --tw-prose-headings: oklch(0.16 0.022 var(--hue));
+    --tw-prose-bold: oklch(0.16 0.022 var(--hue));
+    --tw-prose-quotes: oklch(0.30 0.020 var(--hue));
+    --tw-prose-quote-borders: var(--primary);
+    --tw-prose-hr: oklch(0.85 0.012 var(--hue));
+    --tw-prose-th-borders: oklch(0.78 0.015 var(--hue));
+    --tw-prose-td-borders: oklch(0.88 0.012 var(--hue));
+    --tw-prose-bullets: var(--primary);
+
+    /* 中文友好的行高 + 字距 */
+    line-height: 1.78;
+    letter-spacing: 0.005em;
+    font-feature-settings: "kern", "ss01";
+    text-rendering: optimizeLegibility;
+
+    /* === 标题：清晰的层级感 === */
     h1 {
-        @apply text-3xl;
+        @apply text-3xl mt-10 mb-5 font-bold;
+        letter-spacing: -0.01em;
+    }
+
+    h2 {
+        @apply text-2xl mt-12 mb-5 pb-2 font-bold;
+        border-bottom: 1px solid var(--line-divider);
+        letter-spacing: -0.01em;
+    }
+
+    h3 {
+        @apply text-xl mt-8 mb-3 font-semibold;
+    }
+
+    h4 {
+        @apply text-lg mt-6 mb-2 font-semibold;
     }
 
     h1, h2, h3, h4, h5, h6 {
@@ -19,13 +52,20 @@
         }
     }
 
+    /* 段落更舒适的呼吸感 */
+    p {
+        margin-top: 1em;
+        margin-bottom: 1em;
+    }
+
     a:not(.no-styling) {
         @apply relative bg-none font-medium text-[var(--primary)]
         underline decoration-[var(--link-underline)] decoration-1 decoration-dashed underline-offset-4;
         box-decoration-break: clone;
         -webkit-box-decoration-break: clone;
         display: inline-block;
-    
+        transition: background 0.18s ease, border-color 0.18s ease;
+
         &:hover, &:active {
             @apply decoration-transparent;
             background: var(--btn-plain-bg-hover);
@@ -95,25 +135,78 @@
     }
 
 
+    /* === 列表：项目间距、子弹颜色 === */
     ul, ol {
-        li::marker {
-            @apply text-[var(--primary)];
+        margin-top: 1em;
+        margin-bottom: 1em;
+        padding-left: 1.4em;
+
+        li {
+            margin-top: 0.4em;
+            margin-bottom: 0.4em;
+            padding-left: 0.25em;
+
+            &::marker {
+                @apply text-[var(--primary)];
+                font-weight: 700;
+            }
         }
     }
 
+    /* === 引用块：用主题色彩做左侧光带 === */
     blockquote {
-        @apply not-italic border-transparent relative;
+        @apply not-italic border-transparent relative px-5 py-1 my-6 rounded-md;
         font-weight: inherit;
+        background: var(--btn-regular-bg);
 
         &:before {
-            @apply content-[''] absolute -left-1 block transition bg-[var(--btn-regular-bg)] h-full w-1 rounded-full;
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.4em;
+            bottom: 0.4em;
+            width: 3px;
+            border-radius: 999px;
+            background: linear-gradient(180deg, var(--primary), oklch(0.55 0.12 var(--hue)));
+            transition: background 0.2s ease;
         }
 
         /* Remove the double quotes from default styles */
         p:before, p:after {
             @apply content-none;
         }
+    }
 
+    /* === 图片：圆角 + 极淡阴影，融入毛玻璃卡片 === */
+    img {
+        @apply rounded-xl mx-auto;
+        box-shadow: 0 6px 20px -10px rgba(0, 0, 0, 0.18);
+    }
+
+    /* === 表格：更清晰的横线，去掉笨重边框 === */
+    table {
+        font-size: 0.95em;
+
+        th {
+            font-weight: 700;
+            letter-spacing: 0.01em;
+        }
+
+        thead {
+            border-bottom-width: 2px;
+            border-bottom-color: var(--tw-prose-th-borders);
+        }
+
+        tbody tr {
+            border-bottom: 1px solid var(--tw-prose-td-borders);
+        }
+    }
+
+    /* === 分隔线：虚线、低调 === */
+    hr {
+        @apply my-12;
+        border-color: var(--line-divider);
+        border-style: dashed;
     }
 
     .katex-display-container {
@@ -121,5 +214,22 @@
         overflow-x: auto;
         margin: 1em 0;
     }
-    
+
+}
+
+/* === 深色模式：单独覆盖文本颜色，确保对比度更舒适 === */
+:root.dark .custom-md {
+    --tw-prose-body: oklch(0.94 0.012 var(--hue));
+    --tw-prose-headings: oklch(0.985 0.008 var(--hue));
+    --tw-prose-bold: oklch(0.99 0.005 var(--hue));
+    --tw-prose-quotes: oklch(0.86 0.014 var(--hue));
+    --tw-prose-quote-borders: var(--primary);
+    --tw-prose-hr: oklch(0.30 0.014 var(--hue));
+    --tw-prose-th-borders: oklch(0.40 0.018 var(--hue));
+    --tw-prose-td-borders: oklch(0.28 0.014 var(--hue));
+    --tw-prose-bullets: var(--primary);
+
+    img {
+        box-shadow: 0 8px 28px -10px rgba(0, 0, 0, 0.55);
+    }
 }
