@@ -29,3 +29,6 @@ yarn.lock
 # ide
 .idea
 *.iml
+
+# playwright/cursor mcp 临时输出
+.playwright-mcp/

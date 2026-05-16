@@ -21,6 +21,7 @@ import { defaultFavicons } from "../constants/icon";
 import type { Favicon } from "../types/config";
 import { pathsEqual, url } from "../utils/url-utils";
 import "katex/dist/katex.css";
+import "../styles/expressive-code.css";
 
 interface Props {
 	title?: string;
@@ -194,8 +195,10 @@ const bannerOffset =
 	.enable-banner #banner {
 		@apply h-[var(--banner-height-home)] translate-y-[var(--bannerOffset)]
 	}
+	/* 不能用 translate-y：transform 会让 #main-grid 成为子元素 sticky 的 containing block，
+	   破坏侧栏的 position: sticky。改用 margin-top 实现等价的下推 */
 	.enable-banner.is-home #main-grid {
-		@apply translate-y-[var(--banner-height-extend)];
+		@apply mt-[var(--banner-height-extend)];
 	}
 	.enable-banner #top-row {
 		@apply h-[calc(var(--banner-height-home)_-_4.5rem)] transition-all duration-300
@@ -226,6 +229,7 @@ import {
 	MAIN_PANEL_OVERLAPS_BANNER_HEIGHT
 } from "../constants/constants";
 import { siteConfig } from '../config';
+import { initPhxCodeToolbars, closeAllFullscreen } from "../scripts/phx-code-toolbar";
 
 /* Preload fonts */
 // (async function() {
@@ -384,12 +388,15 @@ function init() {
 	loadHue();
 	initCustomScrollbar();
 	showBanner();
+	initPhxCodeToolbars();
 }
 
 /* Load settings when entering the site */
 init();
 
 const setup = () => {
+	window.swup.hooks.on("page:view", initPhxCodeToolbars);
+	window.swup.hooks.on("visit:start", closeAllFullscreen);
 	// TODO: temp solution to change the height of the banner
 /*
 	window.swup.hooks.on('animation:out:start', () => {

@@ -1,108 +1,279 @@
+/* === PHX：参考 hljs 代码块（行号栏 + 底部工具条），与 Expressive Code DOM 对齐 === */
+
+body.phx-ec-fullscreen-open {
+	overflow: hidden;
+}
+
 .expressive-code {
-    @apply my-5;
+	margin-block: 1.25rem;
+}
 
-    .frame {
-        @apply !shadow-none overflow-hidden;
-        border-radius: 1rem !important;
-        border: 1px solid rgba(255, 255, 255, 0.10) !important;
-        background:
-            linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015)),
-            var(--codeblock-bg) !important;
-        box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.08),
-            0 10px 32px -12px rgba(0, 0, 0, 0.55) !important;
-        backdrop-filter: blur(16px) saturate(140%);
-        -webkit-backdrop-filter: blur(16px) saturate(140%);
-    }
+.expressive-code .frame {
+	@apply overflow-hidden;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	border-radius: 0.75rem !important;
+	border: 1px solid oklch(0.55 0.04 var(--hue) / 0.35) !important;
+	background: var(--codeblock-bg) !important;
+	box-shadow:
+		inset 0 1px 0 oklch(1 0 0 / 0.06),
+		0 12px 40px -18px rgba(0, 0, 0, 0.45) !important;
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+}
 
-    .frame .header {
-        position: relative;
-        min-height: 2.35rem !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important;
-        background:
-            linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.025)),
-            var(--codeblock-topbar-bg) !important;
-    }
+:root.dark .expressive-code .frame {
+	border-color: oklch(0.55 0.06 var(--hue) / 0.28) !important;
+}
 
-    .frame .header::before {
-        content: "";
-        position: absolute;
-        left: 0.95rem;
-        top: 50%;
-        width: 0.72rem;
-        height: 0.72rem;
-        border-radius: 999px;
-        transform: translateY(-50%);
-        background: #ff5f57;
-        box-shadow:
-            1.05rem 0 0 #ffbd2e,
-            2.1rem 0 0 #28c840;
-        opacity: 0.95;
-    }
+/* 顶栏：语言 / 标题 */
+.expressive-code .frame .header {
+	position: relative;
+	order: 0;
+	flex: 0 0 auto;
+	min-height: 2.25rem !important;
+	padding: 0 0.75rem !important;
+	display: flex;
+	align-items: center;
+	border-bottom: 1px solid oklch(0.55 0.04 var(--hue) / 0.22) !important;
+	background: var(--codeblock-topbar-bg) !important;
+}
 
-    .frame .header::after {
-        content: "";
-        position: absolute;
-        left: 0.95rem;
-        top: 50%;
-        width: 0.72rem;
-        height: 0.72rem;
-        border-radius: 999px;
-        transform: translateY(-50%);
-        box-shadow:
-            inset 0 0 0 1px rgba(0, 0, 0, 0.18),
-            1.05rem 0 0 rgba(0, 0, 0, 0),
-            2.1rem 0 0 rgba(0, 0, 0, 0);
-        pointer-events: none;
-    }
+.expressive-code .frame .header::before,
+.expressive-code .frame .header::after {
+	display: none !important;
+}
 
-    .frame .title {
-        color: rgba(255, 255, 255, 0.58) !important;
-        font-size: 0.78rem !important;
-        letter-spacing: 0.02em;
-        margin-left: 3.55rem !important;
-    }
+.expressive-code .frame .title {
+	margin-left: 0 !important;
+	color: oklch(0.42 0.06 var(--hue)) !important;
+	font-size: 0.8rem !important;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+}
 
-    .frame:not(.has-title) .title::before,
-    .frame .title:empty::before {
-        content: "terminal";
-        color: rgba(255, 255, 255, 0.38);
-        font-weight: 600;
-    }
+:root.dark .expressive-code .frame .title {
+	color: oklch(0.88 0.02 var(--hue) / 0.85) !important;
+}
 
-    pre {
-        padding: 1rem 1.05rem 1.05rem !important;
-        background: transparent !important;
-    }
+.expressive-code .frame:not(.has-title) .title:empty::before,
+.expressive-code .frame .title:empty::before {
+	content: "代码";
+	color: oklch(0.5 0.05 var(--hue));
+	font-weight: 600;
+}
 
-    code {
-        font-size: 0.86rem !important;
-        line-height: 1.62 !important;
-    }
+:root.dark .expressive-code .frame:not(.has-title) .title:empty::before,
+:root.dark .expressive-code .frame .title:empty::before {
+	color: oklch(0.75 0.02 var(--hue) / 0.55);
+}
 
-    .ec-line {
-        min-height: 1.45rem !important;
-    }
+.expressive-code .frame pre {
+	order: 1;
+	flex: 1 1 auto;
+	margin: 0 !important;
+	padding: 0.65rem 0.75rem 0.85rem !important;
+	background: transparent !important;
+	overflow: auto;
+}
 
-    .ec-line .code {
-        padding-inline-start: 0 !important;
-    }
+/* 行号栏：hljs-ln-numbers 风格 */
+.expressive-code .frame .ec-line {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	align-items: stretch;
+	column-gap: 0;
+	min-height: 1.5rem !important;
+	border-bottom: 1px solid oklch(0.55 0.04 var(--hue) / 0.08);
+}
 
-    .copy-btn {
-        top: 0.52rem !important;
-        right: 0.55rem !important;
-        opacity: 0.45;
-        background: rgba(255, 255, 255, 0.08) !important;
-        border: 1px solid rgba(255, 255, 255, 0.10) !important;
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-    }
+:root.dark .expressive-code .frame .ec-line {
+	border-bottom-color: oklch(0.75 0.02 var(--hue) / 0.06);
+}
 
-    .frame:hover .copy-btn {
-        opacity: 1;
-    }
+.expressive-code .frame .ec-line:last-child {
+	border-bottom: none;
+}
 
-    .title {
-        font-family: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    }
+.expressive-code .frame .ec-line .gutter {
+	grid-column: 1;
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-start;
+	padding: 0.1rem 0.55rem 0.1rem 0.45rem;
+	min-width: 2.75rem;
+	background: oklch(0.55 0.03 var(--hue) / 0.06);
+	border-right: 1px solid oklch(0.55 0.04 var(--hue) / 0.12);
+	user-select: none;
+}
+
+:root.dark .expressive-code .frame .ec-line .gutter {
+	background: oklch(0.2 0.02 var(--hue) / 0.55);
+	border-right-color: oklch(0.75 0.02 var(--hue) / 0.08);
+}
+
+.expressive-code .frame .ec-line .gutter .ln {
+	font-family: "JetBrains Mono Variable", ui-monospace, monospace;
+	font-size: 0.72rem !important;
+	line-height: 1.5rem !important;
+	color: oklch(0.5 0.04 var(--hue)) !important;
+	font-variant-numeric: tabular-nums;
+	padding-inline: 0 !important;
+}
+
+:root.dark .expressive-code .frame .ec-line .gutter .ln {
+	color: oklch(0.72 0.02 var(--hue) / 0.55) !important;
+}
+
+.expressive-code .frame .ec-line .code {
+	grid-column: 2;
+	padding: 0.1rem 0.5rem 0.1rem 0.65rem !important;
+}
+
+/* 无行号时（如 shellsession）仅一列，避免网格留白 */
+.expressive-code .frame .ec-line:not(:has(.gutter)) {
+	grid-template-columns: 1fr;
+}
+
+.expressive-code .frame .ec-line:not(:has(.gutter)) .code {
+	grid-column: 1;
+	padding-inline-start: 0.65rem !important;
+}
+
+.expressive-code .frame.ec-hide-line-numbers .ec-line {
+	grid-template-columns: 1fr;
+}
+
+.expressive-code .frame.ec-hide-line-numbers .ec-line .gutter {
+	display: none !important;
+}
+
+.expressive-code .frame.ec-hide-line-numbers .ec-line .code {
+	grid-column: 1;
+	padding-inline-start: 0.75rem !important;
+}
+
+/* 关闭折行（与工具条联动） */
+.expressive-code .frame.ec-no-wrap pre {
+	overflow-x: auto !important;
+	white-space: pre !important;
+}
+
+.expressive-code .frame.ec-no-wrap pre code .code {
+	white-space: pre !important;
+}
+
+.expressive-code pre code {
+	font-size: 0.84rem !important;
+	line-height: 1.55 !important;
+}
+
+/* 复制按钮保留在 DOM 中供脚本触发，视觉上隐藏 */
+.expressive-code .frame .copy-btn {
+	position: absolute !important;
+	left: -9999px !important;
+	top: 0 !important;
+	width: 1px !important;
+	height: 1px !important;
+	opacity: 0 !important;
+	overflow: hidden !important;
+}
+
+/* 底部工具条 */
+.expressive-code .phx-ec-toolbar {
+	order: 2;
+	flex: 0 0 auto;
+	display: flex;
+	flex-direction: row;
+	align-items: stretch;
+	border-top: 1px solid oklch(0.55 0.04 var(--hue) / 0.2);
+	background: linear-gradient(
+		180deg,
+		oklch(0.55 0.03 var(--hue) / 0.08),
+		oklch(0.55 0.03 var(--hue) / 0.02)
+	);
+}
+
+:root.dark .expressive-code .phx-ec-toolbar {
+	border-top-color: oklch(0.75 0.02 var(--hue) / 0.1);
+	background: linear-gradient(
+		180deg,
+		oklch(0.2 0.02 var(--hue) / 0.65),
+		oklch(0.18 0.02 var(--hue) / 0.35)
+	);
+}
+
+.expressive-code .phx-ec-toolbar__btn {
+	flex: 1 1 0;
+	min-width: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.35rem;
+	padding: 0.45rem 0.35rem;
+	margin: 0;
+	border: none;
+	border-right: 1px solid oklch(0.55 0.04 var(--hue) / 0.12);
+	background: transparent;
+	color: oklch(0.4 0.05 var(--hue));
+	cursor: pointer;
+	transition:
+		background 0.15s ease,
+		color 0.15s ease;
+}
+
+.expressive-code .phx-ec-toolbar__btn:last-child {
+	border-right: none;
+}
+
+:root.dark .expressive-code .phx-ec-toolbar__btn {
+	color: oklch(0.88 0.02 var(--hue) / 0.75);
+	border-right-color: oklch(0.75 0.02 var(--hue) / 0.08);
+}
+
+.expressive-code .phx-ec-toolbar__btn:hover:not(:disabled) {
+	background: oklch(0.55 0.06 var(--hue) / 0.12);
+	color: var(--primary);
+}
+
+:root.dark .expressive-code .phx-ec-toolbar__btn:hover:not(:disabled) {
+	background: oklch(0.75 0.04 var(--hue) / 0.08);
+}
+
+.expressive-code .phx-ec-toolbar__btn:disabled {
+	opacity: 0.35;
+	cursor: not-allowed;
+}
+
+.expressive-code .phx-ec-toolbar__btn[aria-pressed="true"]:not(:disabled) {
+	color: var(--primary);
+}
+
+.expressive-code .phx-ec-toolbar__ico {
+	display: inline-flex;
+	width: 1.1rem;
+	height: 1.1rem;
+	align-items: center;
+	justify-content: center;
+}
+
+.expressive-code .phx-ec-toolbar__ico svg {
+	width: 100%;
+	height: 100%;
+}
+
+/* 全屏 */
+.expressive-code .frame.ec-fullscreen {
+	position: fixed !important;
+	inset: 0.75rem !important;
+	z-index: 10050 !important;
+	max-width: min(100vw - 1.5rem, 72rem) !important;
+	max-height: calc(100vh - 1.5rem) !important;
+	margin: auto !important;
+	box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55) !important;
+}
+
+.expressive-code .frame.ec-fullscreen pre {
+	max-height: calc(100vh - 8rem);
 }

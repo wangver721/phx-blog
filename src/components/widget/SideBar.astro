@@ -9,9 +9,10 @@ interface Props {
 
 const className = Astro.props.class;
 ---
-{/* 侧边栏：分类与标签小组件已按 PHX 偏好移除，只保留个人资料卡 */}
-<div id="sidebar" class:list={[className, "w-full"]}>
-    <div id="profile-sticky" class="flex flex-col w-full gap-4 mb-4 lg:sticky lg:top-24">
+{/* 侧边栏：分类/标签小组件已移除，只保留个人资料卡。
+   桌面端通过 lg:self-start + lg:sticky 让侧栏整体置顶并随页面滚动跟随。 */}
+<div id="sidebar" class:list={[className, "w-full lg:self-start lg:sticky lg:top-4"]}>
+    <div id="profile-sticky" class="flex flex-col w-full gap-4 mb-4">
         <Profile></Profile>
     </div>
 </div>
