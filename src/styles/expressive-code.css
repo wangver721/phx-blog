@@ -1,9 +1,5 @@
 /* === PHX：参考 hljs 代码块（行号栏 + 底部工具条），与 Expressive Code DOM 对齐 === */
 
-body.phx-ec-fullscreen-open {
-	overflow: hidden;
-}
-
 .expressive-code {
 	margin-block: 1.25rem;
 }
@@ -263,17 +259,56 @@ body.phx-ec-fullscreen-open {
 	height: 100%;
 }
 
-/* 全屏 */
-.expressive-code .frame.ec-fullscreen {
-	position: fixed !important;
-	inset: 0.75rem !important;
-	z-index: 10050 !important;
-	max-width: min(100vw - 1.5rem, 72rem) !important;
-	max-height: calc(100vh - 1.5rem) !important;
-	margin: auto !important;
-	box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55) !important;
+/* === 全屏 ===
+   全屏时 .expressive-code 整个容器会被 JS portal 到 <body> 下，
+   避开祖先 transform 对 position:fixed 的干扰；下面这些选择器需要在
+   portal 后仍能匹配，所以不依赖 `.expressive-code` 父级。 */
+
+.expressive-code.phx-ec-portal {
+	position: fixed;
+	inset: 0;
+	z-index: 10049;
+	pointer-events: none;
+	margin: 0 !important;
+	padding: 0 !important;
 }
 
-.expressive-code .frame.ec-fullscreen pre {
-	max-height: calc(100vh - 8rem);
+.expressive-code.phx-ec-portal figure.frame.ec-fullscreen {
+	pointer-events: auto;
+}
+
+body.phx-ec-fullscreen-open {
+	overflow: hidden;
+}
+
+body.phx-ec-fullscreen-open::before {
+	content: "";
+	position: fixed;
+	inset: 0;
+	z-index: 10048;
+	background: rgba(0, 0, 0, 0.55);
+	backdrop-filter: blur(2px);
+	-webkit-backdrop-filter: blur(2px);
+}
+
+figure.frame.ec-fullscreen {
+	position: fixed !important;
+	inset: 1rem !important;
+	z-index: 10050 !important;
+	max-width: min(100vw - 2rem, 72rem) !important;
+	max-height: calc(100vh - 2rem) !important;
+	margin: auto !important;
+	display: flex !important;
+	flex-direction: column !important;
+	box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6) !important;
+}
+
+figure.frame.ec-fullscreen pre {
+	flex: 1 1 auto !important;
+	max-height: none !important;
+	overflow: auto !important;
+}
+
+.phx-ec-toolbar__btn.is-success {
+	color: oklch(0.7 0.18 145) !important;
 }
