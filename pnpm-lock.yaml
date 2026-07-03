@@ -38,6 +38,9 @@ importers:
       '@fontsource-variable/noto-sans-sc':
         specifier: ^5.2.10
         version: 5.2.10
+      '@fontsource-variable/noto-serif-sc':
+        specifier: ^5.2.10
+        version: 5.2.10
       '@fontsource/roboto':
         specifier: ^5.2.9
         version: 5.2.9
@@ -1259,6 +1262,9 @@ packages:
 
   '@fontsource-variable/noto-sans-sc@5.2.10':
     resolution: {integrity: sha512-zdk10i5HrDQTXI7ldD61zToX1fsgig8vDTsu7zB48SXOitWfuX0e5viZAwnkHuhwh096PU6X6i1AyAsbBCISpA==}
+
+  '@fontsource-variable/noto-serif-sc@5.2.10':
+    resolution: {integrity: sha512-TRhuDxWAnqUUtRZFCy8aoJB3/7HsuCaW/4B3wBTE0hzE8QVapklTjE2aY7s/wXWFXHLdflYNroloZoXekoKClw==}
 
   '@fontsource/roboto@5.2.9':
     resolution: {integrity: sha512-ZTkyHiPk74B/aj8BZWbsxD5Yu+Lq+nR64eV4wirlrac2qXR7jYk2h6JlLYuOuoruTkGQWNw2fMuKNavw7/rg0w==}
@@ -6772,6 +6778,8 @@ snapshots:
   '@fontsource-variable/jetbrains-mono@5.2.8': {}
 
   '@fontsource-variable/noto-sans-sc@5.2.10': {}
+
+  '@fontsource-variable/noto-serif-sc@5.2.10': {}
 
   '@fontsource/roboto@5.2.9': {}
 

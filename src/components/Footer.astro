@@ -5,21 +5,15 @@ import { url } from "../utils/url-utils";
 const currentYear = new Date().getFullYear();
 ---
 
-<div class="transition border-t border-black/10 dark:border-white/15 my-10 border-dashed mx-32"></div>
-<div class="transition border-dashed border-[oklch(85%_0.01_var(--hue))] dark:border-white/15 rounded-2xl mb-12 flex flex-col items-center justify-center px-6 gap-1.5">
-    <div class="transition text-50 text-sm text-center">
-        &copy; <span id="copyright-year">{currentYear}</span> {profileConfig.name}. All Rights Reserved. /
-        <a class="transition link text-[var(--primary)] font-medium" target="_blank" href={url('rss.xml')}>RSS</a> /
-        <a class="transition link text-[var(--primary)] font-medium" target="_blank" href={url('sitemap-index.xml')}>Sitemap</a>
+<div class="transition border-t border-[var(--line-divider)] mt-20"></div>
+<div class="transition py-10 flex flex-col md:flex-row md:items-center justify-between gap-3">
+    <div class="transition text-30 text-[0.8125rem]">
+        &copy; <span id="copyright-year">{currentYear}</span> {profileConfig.name} · 
+        <a class="transition hover:text-[var(--primary)]" target="_blank" rel="license noopener" href={licenseConfig.url}>{licenseConfig.name}</a>
     </div>
-    <div class="transition text-50 text-xs text-center opacity-80">
-        除特别注明外，本站文章采用
-        <a class="transition link text-[var(--primary)] font-medium" target="_blank" rel="license noopener" href={licenseConfig.url}>{licenseConfig.name}</a>
-        协议授权 — 必须署名 · 禁止商用 · 禁止改编
-    </div>
-    <div class="transition text-50 text-xs text-center opacity-60">
-        Powered by
-        <a class="transition link text-[var(--primary)] font-medium" target="_blank" href="https://astro.build">Astro</a> &amp;
-        <a class="transition link text-[var(--primary)] font-medium" target="_blank" href="https://github.com/saicaca/fuwari">Fuwari</a>
+    <div class="transition text-30 text-[0.8125rem] flex items-center gap-4">
+        <a class="transition hover:text-[var(--primary)]" target="_blank" href={url('rss.xml')}>RSS</a>
+        <a class="transition hover:text-[var(--primary)]" target="_blank" href={url('sitemap-index.xml')}>Sitemap</a>
+        <a class="transition hover:text-[var(--primary)]" target="_blank" href="https://astro.build">Astro</a>
     </div>
 </div>

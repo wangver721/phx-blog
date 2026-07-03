@@ -5,7 +5,7 @@
 项目路径：
 
 ```text
-C:\Users\王先生\Desktop\Cursor\PHX_Blog
+C:\Users\王先生\Desktop\Cursor\phx-blog
 ```
 
 文章目录：

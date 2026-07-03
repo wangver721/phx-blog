@@ -1,40 +1,38 @@
 @tailwind components;
 
 @layer components {
+    /* ============ 极简编辑风 ============
+       无卡片、无玻璃、无阴影。排版与发丝线构成全部视觉。 */
     .card-base {
-        /* 毛玻璃主卡片：半透明底色 + 背景模糊 + 边缘高光 + 柔和阴影 */
-        @apply rounded-[var(--radius-large)] overflow-hidden bg-[var(--card-bg)] transition;
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        box-shadow:
-            0 8px 32px 0 rgba(0, 0, 0, 0.10);
-        border: 1px solid rgba(255, 255, 255, 0.40);
+        @apply rounded-[var(--radius-large)] bg-transparent transition;
     }
-    :root.dark .card-base {
-        /* 深色模式下保持玻璃感，但避免边框过亮刺眼 */
-        box-shadow:
-            0 8px 32px 0 rgba(0, 0, 0, 0.35);
-        border: 1px solid rgba(255, 255, 255, 0.18);
+
+    /* 丝滑黑白切换：背景与文字颜色统一走同一条缓动曲线 */
+    html, body, .card-base, .float-panel {
+        transition-property: background-color, border-color, color;
+        transition-duration: var(--theme-duration);
+        transition-timing-function: var(--ease-smooth);
     }
-    /* 浮动面板（搜索/主题选择/导航菜单） */
+
+    /* 浮层（搜索下拉 / 主题菜单 / 移动端菜单）：实体纸面 + 发丝边 + 轻投影 */
     .float-panel {
-        @apply top-[5.25rem] rounded-[var(--radius-large)] overflow-hidden bg-[var(--float-panel-bg)] transition;
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        box-shadow:
-            0 8px 32px 0 rgba(0, 0, 0, 0.10);
-        border: 1px solid rgba(255, 255, 255, 0.40);
+        @apply top-[4.75rem] rounded-xl overflow-hidden bg-[var(--float-panel-bg)];
+        border: 1px solid var(--line-divider);
+        box-shadow: 0 4px 24px -6px rgba(0, 0, 0, 0.10), 0 1px 3px rgba(0, 0, 0, 0.05);
+        transition: transform 0.25s var(--ease-smooth), opacity 0.25s var(--ease-smooth),
+            background-color var(--theme-duration) var(--ease-smooth),
+            border-color var(--theme-duration) var(--ease-smooth);
     }
     :root.dark .float-panel {
-        box-shadow:
-            0 8px 32px 0 rgba(0, 0, 0, 0.35);
-        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow: 0 4px 32px -6px rgba(0, 0, 0, 0.55), 0 1px 3px rgba(0, 0, 0, 0.35);
     }
+
     h1, h2, h3, h4, h5, h6, p, a, span, li, ul, ol, blockquote, code, pre, table, th, td, strong {
         @apply transition;
+        transition-duration: var(--theme-duration);
     }
     .card-shadow {
-        @apply drop-shadow-[0_2px_4px_rgba(0,0,0,0.005)]
+        @apply drop-shadow-none
     }
     .expand-animation {
         @apply relative before:ease-out before:transition active:bg-none hover:before:bg-[var(--btn-plain-bg-hover)] active:before:bg-[var(--btn-plain-bg-active)] z-0
@@ -54,7 +52,7 @@
     }
 
     .btn-card {
-        @apply transition flex items-center justify-center bg-[var(--card-bg)] hover:bg-[var(--btn-card-bg-hover)]
+        @apply transition flex items-center justify-center bg-transparent hover:bg-[var(--btn-card-bg-hover)]
         active:bg-[var(--btn-card-bg-active)]
     }
     .btn-card.disabled {
@@ -62,7 +60,7 @@
     }
     .btn-plain {
         @apply transition relative flex items-center justify-center bg-none
-        text-black/75 hover:text-[var(--primary)] dark:text-white/75 dark:hover:text-[var(--primary)];
+        text-black/70 hover:text-black dark:text-white/70 dark:hover:text-white;
         &:not(.scale-animation) {
             @apply hover:bg-[var(--btn-plain-bg-hover)] active:bg-[var(--btn-plain-bg-active)]
         }
@@ -79,8 +77,8 @@
     }
 
     .link-underline {
-        @apply transition underline decoration-2 decoration-dashed decoration-[var(--link-underline)]
-        hover:decoration-[var(--link-hover)] active:decoration-[var(--link-active)] underline-offset-[0.25rem]
+        @apply transition underline decoration-1 decoration-[var(--link-underline)]
+        hover:decoration-[var(--primary)] active:decoration-[var(--primary)] underline-offset-[0.25rem]
     }
 
     .toc-hide,
@@ -127,12 +125,59 @@
 
     .btn-regular-dark {
         @apply flex items-center justify-center
-        bg-[oklch(0.45_0.01_var(--hue))] hover:bg-[oklch(0.50_0.01_var(--hue))] active:bg-[oklch(0.55_0.01_var(--hue))]
-        dark:bg-[oklch(0.30_0.02_var(--hue))] dark:hover:bg-[oklch(0.35_0.03_var(--hue))] dark:active:bg-[oklch(0.40_0.03_var(--hue))]
+        bg-[oklch(0.45_0.005_var(--hue))] hover:bg-[oklch(0.50_0.005_var(--hue))] active:bg-[oklch(0.55_0.005_var(--hue))]
+        dark:bg-[oklch(0.30_0.006_var(--hue))] dark:hover:bg-[oklch(0.35_0.007_var(--hue))] dark:active:bg-[oklch(0.40_0.008_var(--hue))]
     }
     .btn-regular-dark.success {
-        @apply bg-[oklch(0.75_0.14_var(--hue))] dark:bg-[oklch(0.75_0.14_var(--hue))]
+        @apply bg-[oklch(0.60_0.16_var(--hue))] dark:bg-[oklch(0.60_0.16_var(--hue))]
     }
+
+    /* ============ 编辑风专用组件 ============ */
+
+    /* 发丝分割线 */
+    .hairline {
+        border-bottom: 1px solid var(--line-divider);
+        transition: border-color var(--theme-duration) var(--ease-smooth);
+    }
+
+    /* 目录式文章行 */
+    .index-row {
+        @apply block w-full py-7 md:py-8 hairline transition;
+    }
+    .index-row:hover .index-row-title {
+        color: var(--primary);
+    }
+
+    .index-row-title {
+        @apply font-display font-bold text-90;
+        font-size: 1.375rem;
+        line-height: 1.45;
+        letter-spacing: 0.005em;
+        transition: color 0.2s var(--ease-smooth);
+    }
+    @media (min-width: 768px) {
+        .index-row-title {
+            font-size: 1.5625rem;
+        }
+    }
+}
+
+/* ============ 丝滑黑白切换（View Transitions 圆形揭示） ============ */
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}
+::view-transition-old(root) {
+    z-index: 1;
+}
+::view-transition-new(root) {
+    z-index: 2;
+}
+/* 切换瞬间冻结颜色过渡，避免快照拍到中间色造成脏渐变 */
+html.no-theme-transition,
+html.no-theme-transition * {
+    transition: none !important;
 }
 
 .custom-md img, #post-cover img {

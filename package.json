@@ -33,6 +33,7 @@
     "@expressive-code/plugin-line-numbers": "^0.41.4",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "@fontsource-variable/noto-sans-sc": "^5.2.10",
+    "@fontsource-variable/noto-serif-sc": "^5.2.10",
     "@fontsource/roboto": "^5.2.9",
     "@iconify-json/fa6-brands": "^1.2.6",
     "@iconify-json/fa6-regular": "^1.2.4",

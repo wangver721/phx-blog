@@ -31,19 +31,66 @@ onMount(() => {
 	};
 });
 
-function switchScheme(newMode: LIGHT_DARK_MODE) {
-	mode = newMode;
-	setTheme(newMode);
+function switchScheme(newMode: LIGHT_DARK_MODE, ev?: MouseEvent) {
+	// 丝滑黑白切换：用 View Transitions API 从点击位置做圆形揭示
+	const doSwitch = () => {
+		mode = newMode;
+		setTheme(newMode);
+	};
+
+	const supportsVT =
+		typeof document !== "undefined" &&
+		"startViewTransition" in document &&
+		!window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+	if (!supportsVT) {
+		doSwitch();
+		return;
+	}
+
+	const x = ev?.clientX ?? window.innerWidth - 48;
+	const y = ev?.clientY ?? 48;
+	const radius = Math.hypot(
+		Math.max(x, window.innerWidth - x),
+		Math.max(y, window.innerHeight - y),
+	);
+
+	// 切换瞬间禁用颜色过渡，避免快照捕捉到中间色
+	document.documentElement.classList.add("no-theme-transition");
+	// @ts-ignore startViewTransition 尚未进入所有 TS lib
+	const transition = document.startViewTransition(() => {
+		doSwitch();
+	});
+	transition.ready
+		.then(() => {
+			document.documentElement.animate(
+				{
+					clipPath: [
+						`circle(0px at ${x}px ${y}px)`,
+						`circle(${radius}px at ${x}px ${y}px)`,
+					],
+				},
+				{
+					duration: 550,
+					easing: "cubic-bezier(0.4, 0, 0.2, 1)",
+					pseudoElement: "::view-transition-new(root)",
+				},
+			);
+		})
+		.catch(() => {});
+	transition.finished.finally(() => {
+		document.documentElement.classList.remove("no-theme-transition");
+	});
 }
 
-function toggleScheme() {
+function toggleScheme(ev?: MouseEvent) {
 	let i = 0;
 	for (; i < seq.length; i++) {
 		if (seq[i] === mode) {
 			break;
 		}
 	}
-	switchScheme(seq[(i + 1) % seq.length]);
+	switchScheme(seq[(i + 1) % seq.length], ev);
 }
 
 function showPanel() {
@@ -59,7 +106,7 @@ function hidePanel() {
 
 <!-- z-50 make the panel higher than other float panels -->
 <div class="relative z-50" role="menu" tabindex="-1" onmouseleave={hidePanel}>
-    <button aria-label="Light/Dark Mode" role="menuitem" class="relative btn-plain scale-animation rounded-lg h-11 w-11 active:scale-90" id="scheme-switch" onclick={toggleScheme} onmouseenter={showPanel}>
+    <button aria-label="Light/Dark Mode" role="menuitem" class="relative btn-plain scale-animation rounded-lg h-10 w-10 active:scale-90" id="scheme-switch" onclick={(e) => toggleScheme(e)} onmouseenter={showPanel}>
         <div class="absolute" class:opacity-0={mode !== LIGHT_MODE}>
             <Icon icon="material-symbols:wb-sunny-outline-rounded" class="text-[1.25rem]"></Icon>
         </div>
@@ -75,21 +122,21 @@ function hidePanel() {
         <div class="card-base float-panel p-2">
             <button class="flex transition whitespace-nowrap items-center !justify-start w-full btn-plain scale-animation rounded-lg h-9 px-3 font-medium active:scale-95 mb-0.5"
                     class:current-theme-btn={mode === LIGHT_MODE}
-                    onclick={() => switchScheme(LIGHT_MODE)}
+                    onclick={(e) => switchScheme(LIGHT_MODE, e)}
             >
                 <Icon icon="material-symbols:wb-sunny-outline-rounded" class="text-[1.25rem] mr-3"></Icon>
                 {i18n(I18nKey.lightMode)}
             </button>
             <button class="flex transition whitespace-nowrap items-center !justify-start w-full btn-plain scale-animation rounded-lg h-9 px-3 font-medium active:scale-95 mb-0.5"
                     class:current-theme-btn={mode === DARK_MODE}
-                    onclick={() => switchScheme(DARK_MODE)}
+                    onclick={(e) => switchScheme(DARK_MODE, e)}
             >
                 <Icon icon="material-symbols:dark-mode-outline-rounded" class="text-[1.25rem] mr-3"></Icon>
                 {i18n(I18nKey.darkMode)}
             </button>
             <button class="flex transition whitespace-nowrap items-center !justify-start w-full btn-plain scale-animation rounded-lg h-9 px-3 font-medium active:scale-95"
                     class:current-theme-btn={mode === AUTO_MODE}
-                    onclick={() => switchScheme(AUTO_MODE)}
+                    onclick={(e) => switchScheme(AUTO_MODE, e)}
             >
                 <Icon icon="material-symbols:radio-button-partial-outline" class="text-[1.25rem] mr-3"></Icon>
                 {i18n(I18nKey.systemMode)}

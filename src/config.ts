@@ -15,12 +15,12 @@ export const siteConfig: SiteConfig = {
 	themeColor: {
 		// 主题色 hue（0-360）：
 		// 0 = 正赤、20 = 琥珀、45 = 金棕、200 = 蓝青、250 = 紫青、345 = 粉
-		// 0 = 浓郁纯正的赤红，与头像气场更同频
-		hue: 0,
-		fixed: false, // true 则隐藏右上角主题色调节器
+		// 极简编辑风：黑白为主，赤红只作点缀
+		hue: 25,
+		fixed: true, // 极简风隐藏调色器，保持黑白红三色纪律
 	},
 	banner: {
-		enable: true, // 启用首页大横幅
+		enable: false, // 极简编辑风：无大横幅，排版即视觉
 		// 路径相对 /src 目录；以 / 开头则相对 /public
 		// 暗夜赤焰横幅，与头像气场呼应
 		src: "assets/images/banner.png",
@@ -118,9 +118,9 @@ export const giscusConfig = {
 	reactionsEnabled: "1",
 	emitMetadata: "0",
 	inputPosition: "top", // top / bottom
-	// Giscus 主题：noborder_dark = 无边框深色，与暗夜赤焰主题最融合
+	// Giscus 主题：跟随站点明暗（Comments.astro 内动态同步）
 	// 其它可选：dark / dark_dimmed / transparent_dark / noborder_gray / cobalt
-	theme: "noborder_dark",
+	theme: "noborder_light",
 	lang: "zh-CN",
 	loading: "lazy",
 };

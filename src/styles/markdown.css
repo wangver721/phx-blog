@@ -16,24 +16,24 @@
     font-feature-settings: "kern", "ss01";
     text-rendering: optimizeLegibility;
 
-    /* === 标题：清晰的层级感 === */
+    /* === 标题：宋体衬线，编辑刊物层级感 === */
     h1 {
-        @apply text-3xl mt-10 mb-5 font-bold;
-        letter-spacing: -0.01em;
+        @apply font-display text-3xl mt-10 mb-5 font-bold;
+        letter-spacing: 0.005em;
     }
 
     h2 {
-        @apply text-2xl mt-12 mb-5 pb-2 font-bold;
+        @apply font-display text-2xl mt-12 mb-5 pb-2 font-bold;
         border-bottom: 1px solid var(--line-divider);
-        letter-spacing: -0.01em;
+        letter-spacing: 0.005em;
     }
 
     h3 {
-        @apply text-xl mt-8 mb-3 font-semibold;
+        @apply font-display text-xl mt-8 mb-3 font-semibold;
     }
 
     h4 {
-        @apply text-lg mt-6 mb-2 font-semibold;
+        @apply font-display text-lg mt-6 mb-2 font-semibold;
     }
 
     h1, h2, h3, h4, h5, h6 {
@@ -155,7 +155,7 @@
 
     /* === 引用块：用主题色彩做左侧光带 === */
     blockquote {
-        @apply not-italic border-transparent relative px-5 py-1 my-6 rounded-md;
+        @apply not-italic border-transparent relative px-5 py-1 my-6 rounded-lg;
         font-weight: inherit;
         background: var(--btn-regular-bg);
 
@@ -177,10 +177,10 @@
         }
     }
 
-    /* === 图片：圆角 + 极淡阴影，融入毛玻璃卡片 === */
+    /* === 图片：圆角 + 极淡阴影 + 细描边，像嵌在玻璃里的照片 === */
     img {
         @apply rounded-xl mx-auto;
-        box-shadow: 0 6px 20px -10px rgba(0, 0, 0, 0.18);
+        box-shadow: 0 0 0 1px var(--line-divider), 0 6px 20px -10px rgba(0, 0, 0, 0.18);
     }
 
     /* === 表格：更清晰的横线，去掉笨重边框 === */
@@ -202,11 +202,11 @@
         }
     }
 
-    /* === 分隔线：虚线、低调 === */
+    /* === 分隔线：发丝实线，与全站一致 === */
     hr {
         @apply my-12;
         border-color: var(--line-divider);
-        border-style: dashed;
+        border-style: solid;
     }
 
     .katex-display-container {

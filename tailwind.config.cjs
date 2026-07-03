@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        // 英文走 Roboto，中文走思源黑体可变字体；后面是系统字体兜底
+        // 正文：英文 Roboto + 中文思源黑体
         sans: [
           "Roboto",
           '"Noto Sans SC Variable"',
@@ -15,6 +15,15 @@ module.exports = {
           '"Microsoft YaHei"',
           "sans-serif",
           ...defaultTheme.fontFamily.sans,
+        ],
+        // 标题展示：思源宋体，编辑刊物气质
+        display: [
+          '"Noto Serif SC Variable"',
+          '"Noto Serif SC"',
+          '"Source Han Serif SC"',
+          '"Songti SC"',
+          "SimSun",
+          "serif",
         ],
       },
     },

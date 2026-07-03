@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from "astro";
 import Pagination from "../components/control/Pagination.astro";
 import PostPage from "../components/PostPage.astro";
+import { profileConfig, siteConfig } from "../config";
 import { PAGE_SIZE } from "../constants/constants";
 import MainGridLayout from "../layouts/MainGridLayout.astro";
 import { getSortedPosts } from "../utils/content-utils";
@@ -15,9 +16,25 @@ export const getStaticPaths = (async ({ paginate }) => {
 const { page } = Astro.props;
 
 const len = page.data.length;
+const isFirstPage = page.currentPage === 1;
 ---
 
 <MainGridLayout>
-    <PostPage page={page}></PostPage>
-    <Pagination class="mx-auto onload-animation" page={page} style={`animation-delay: calc(var(--content-delay) + ${(len)*50}ms)`}></Pagination>
+    <div class="max-w-[64rem] mx-auto">
+        {isFirstPage && (
+            <div class="pt-16 md:pt-24 pb-14 md:pb-20 onload-animation">
+                <h1 class="transition font-display font-bold text-[3rem]/[1.2] md:text-[4.75rem]/[1.15] tracking-[0.01em] text-90">
+                    {siteConfig.subtitle}<span class="text-[var(--primary)]">.</span>
+                </h1>
+                <p class="transition text-50 text-[0.9375rem] md:text-base mt-5 md:mt-7 tracking-[0.08em]">
+                    {profileConfig.name} · {profileConfig.bio}
+                </p>
+            </div>
+        )}
+        {!isFirstPage && <div class="pt-16 md:pt-20"></div>}
+        <PostPage page={page}></PostPage>
+        <div class="mt-12">
+            <Pagination class="mx-auto onload-animation" page={page} style={`animation-delay: calc(var(--content-delay) + ${(len)*60}ms)`}></Pagination>
+        </div>
+    </div>
 </MainGridLayout>

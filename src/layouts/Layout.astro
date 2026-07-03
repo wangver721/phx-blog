@@ -2,10 +2,12 @@
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-// 中文字体：思源黑体（Noto Sans SC），可变字重
+// 中文字体：思源黑体（正文）+ 思源宋体（标题展示），均为可变字重
 import "@fontsource-variable/noto-sans-sc";
+import "@fontsource-variable/noto-serif-sc";
 
 import ConfigCarrier from "@components/ConfigCarrier.astro";
+import GlobalStyles from "@components/GlobalStyles.astro";
 import { cloudflareAnalyticsConfig, profileConfig, siteConfig } from "@/config";
 import {
 	AUTO_MODE,
@@ -167,6 +169,7 @@ const bannerOffset =
 	<body class=" min-h-screen transition " class:list={[{"lg:is-home": isHomePage, "enable-banner": enableBanner}]}
 		  data-overlayscrollbars-initialize
 	>
+		<GlobalStyles />
 		<ConfigCarrier></ConfigCarrier>
 		<slot />
 
@@ -195,6 +198,23 @@ const bannerOffset =
 	.enable-banner #banner {
 		@apply h-[var(--banner-height-home)] translate-y-[var(--bannerOffset)]
 	}
+	/* Banner 底部渐变遮罩：让图片柔和融入页面背景，避免生硬截断。
+	   亮色模式遮罩要轻，否则白色渐变盖在深色图上会显雾 */
+	#banner-wrapper::after {
+		content: "";
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 35%;
+		pointer-events: none;
+		background: linear-gradient(to bottom, transparent, var(--page-bg));
+		opacity: 0.30;
+		transition: opacity 0.3s;
+	}
+	:root.dark #banner-wrapper::after {
+		opacity: 0.85;
+	}
 	/* 不能用 translate-y：transform 会让 #main-grid 成为子元素 sticky 的 containing block，
 	   破坏侧栏的 position: sticky。改用 margin-top 实现等价的下推 */
 	.enable-banner.is-home #main-grid {
@@ -207,7 +227,7 @@ const bannerOffset =
 		@apply top-[calc(1rem_-_var(--banner-height-extend))]
 	}
 	.navbar-hidden {
-		@apply opacity-0 -translate-y-16
+		@apply opacity-0 -translate-y-24
 	}
 }
 </style>

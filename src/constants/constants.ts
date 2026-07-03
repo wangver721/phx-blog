@@ -3,8 +3,8 @@ export const PAGE_SIZE = 8;
 export const LIGHT_MODE = "light",
 	DARK_MODE = "dark",
 	AUTO_MODE = "auto";
-// 默认深色模式，更贴合 PHX 头像的暗调气场；用户在右上角面板可手动切换
-export const DEFAULT_THEME = DARK_MODE;
+// 极简编辑风默认浅色；右上角一键丝滑切换黑白
+export const DEFAULT_THEME = LIGHT_MODE;
 
 // Banner height unit: vh
 export const BANNER_HEIGHT = 35;

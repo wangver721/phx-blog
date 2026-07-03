@@ -9,7 +9,7 @@ const enabled =
 
 {
 	enabled && (
-		<div class="card-base px-6 md:px-9 py-6 mb-4 onload-animation">
+		<div class="mt-6 mb-4 onload-animation border-t border-[var(--line-divider)] pt-10">
 			<script
 				src="https://giscus.app/client.js"
 				data-repo={giscusConfig.repo}
@@ -30,3 +30,33 @@ const enabled =
 		</div>
 	)
 }
+
+<script>
+// Giscus 主题跟随站点明暗切换
+function currentGiscusTheme() {
+	return document.documentElement.classList.contains("dark")
+		? "noborder_dark"
+		: "noborder_light";
+}
+
+function syncGiscusTheme() {
+	const iframe = document.querySelector<HTMLIFrameElement>("iframe.giscus-frame");
+	iframe?.contentWindow?.postMessage(
+		{ giscus: { setConfig: { theme: currentGiscusTheme() } } },
+		"https://giscus.app",
+	);
+}
+
+const observer = new MutationObserver(syncGiscusTheme);
+observer.observe(document.documentElement, {
+	attributes: true,
+	attributeFilter: ["class"],
+});
+
+// giscus iframe 加载完成后同步一次初始主题
+window.addEventListener("message", (event) => {
+	if (event.origin === "https://giscus.app") {
+		syncGiscusTheme();
+	}
+});
+</script>
