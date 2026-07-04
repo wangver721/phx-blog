@@ -1,8 +1,9 @@
 /**
- * 为 Expressive Code 代码块挂载底部工具条（行号 / 折行 / 复制 / 全屏）。
+ * 为 Expressive Code 代码块装配 mac 窗口风格顶栏：
+ *  左侧红黄绿三点 + 居中标题（文件名或语言名） + 右侧操作按钮（行号 / 折行 / 复制 / 全屏）。
  * 设计要点：
  *  1. 全局 document click 事件委托：避免 init 时机或重复绑定带来的问题；
- *     即使页面切换 / 重新渲染，新生成的工具条也能立刻响应；
+ *     即使页面切换 / 重新渲染，新生成的按钮也能立刻响应；
  *  2. 全屏时把整个 `.expressive-code` 包装容器 portal 到 <body> 下，避免被
  *     祖先的 transform / filter 吃掉 `position: fixed` 的 containing block；
  *  3. 关闭后通过占位注释节点把容器还原回原位，保持文档流不变。
@@ -22,6 +23,8 @@ const ICON_FS =
 	'<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>';
 const ICON_FS_EXIT =
 	'<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2v-4M3 9V5a2 2 0 0 1 2-2h4m6 18h4a2 2 0 0 0 2-2v-4M21 9V5a2 2 0 0 0-2-2h-4"/></svg>';
+const ICON_CHECK =
+	'<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
 
 type Action = "lines" | "wrap" | "copy" | "fs";
 
@@ -65,12 +68,33 @@ function syncButtons(frame: HTMLElement) {
 
 function decorate(frame: HTMLElement) {
 	if (frame.getAttribute(TOOLBAR_FLAG)) return;
+
+	const header = frame.querySelector<HTMLElement>(".header");
+	if (!header) return;
 	frame.setAttribute(TOOLBAR_FLAG, "1");
 
-	const bar = document.createElement("div");
-	bar.className = "phx-ec-toolbar";
-	bar.setAttribute("role", "toolbar");
-	bar.setAttribute("aria-label", "代码块工具栏");
+	/* 左侧：mac 红黄绿三点 */
+	const dots = document.createElement("div");
+	dots.className = "phx-mac-dots";
+	dots.setAttribute("aria-hidden", "true");
+	for (let i = 0; i < 3; i++) {
+		dots.appendChild(document.createElement("span"));
+	}
+	header.prepend(dots);
+
+	/* 中间：标题为空时回填语言名，模拟窗口标题 */
+	const title = header.querySelector<HTMLElement>(".title");
+	if (title && !title.textContent?.trim()) {
+		const lang =
+			frame.querySelector<HTMLElement>("[data-language]")?.dataset.language;
+		title.textContent = lang ? lang.toUpperCase() : "代码";
+	}
+
+	/* 右侧：操作按钮组 */
+	const actions = document.createElement("div");
+	actions.className = "phx-ec-actions";
+	actions.setAttribute("role", "toolbar");
+	actions.setAttribute("aria-label", "代码块工具栏");
 
 	const lines = makeButton("lines", "切换行号", ICON_LINES);
 	const wrap = makeButton("wrap", "切换折行", ICON_WRAP);
@@ -82,8 +106,8 @@ function decorate(frame: HTMLElement) {
 		lines.title = "此代码块无行号";
 	}
 
-	bar.append(lines, wrap, copy, fs);
-	frame.appendChild(bar);
+	actions.append(lines, wrap, copy, fs);
+	header.appendChild(actions);
 	syncButtons(frame);
 }
 
@@ -168,8 +192,13 @@ function ensureGlobalHandlers() {
 				const orig = frame.querySelector<HTMLButtonElement>("button.copy-btn");
 				if (orig) {
 					orig.click();
+					const ico = btn.querySelector(".phx-ec-toolbar__ico");
+					if (ico) ico.innerHTML = ICON_CHECK;
 					btn.classList.add("is-success");
-					window.setTimeout(() => btn.classList.remove("is-success"), 1200);
+					window.setTimeout(() => {
+						btn.classList.remove("is-success");
+						if (ico) ico.innerHTML = ICON_COPY;
+					}, 1200);
 				}
 			} else if (action === "fs") {
 				if (frame.classList.contains("ec-fullscreen")) exitFullscreen(frame);
