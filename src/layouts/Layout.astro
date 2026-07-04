@@ -8,7 +8,7 @@ import "@fontsource-variable/noto-serif-sc";
 
 import ConfigCarrier from "@components/ConfigCarrier.astro";
 import GlobalStyles from "@components/GlobalStyles.astro";
-import { cloudflareAnalyticsConfig, profileConfig, siteConfig } from "@/config";
+import { cloudflareAnalyticsConfig, expressiveCodeConfig, profileConfig, siteConfig } from "@/config";
 import {
 	AUTO_MODE,
 	BANNER_HEIGHT,
@@ -119,7 +119,7 @@ const bannerOffset =
 		<meta name="apple-mobile-web-app-title" content="iPHX.io" />
 
 		<!-- Set the theme before the page is rendered to avoid a flash -->
-		<script is:inline define:vars={{DEFAULT_THEME, LIGHT_MODE, DARK_MODE, AUTO_MODE, BANNER_HEIGHT_EXTEND, PAGE_WIDTH, configHue}}>
+		<script is:inline define:vars={{DEFAULT_THEME, LIGHT_MODE, DARK_MODE, AUTO_MODE, BANNER_HEIGHT_EXTEND, PAGE_WIDTH, configHue, ecLightTheme: expressiveCodeConfig.lightTheme, ecDarkTheme: expressiveCodeConfig.darkTheme}}>
 			// Load the theme from local storage
 			const theme = localStorage.getItem('theme') || DEFAULT_THEME;
 			switch (theme) {
@@ -136,6 +136,11 @@ const bannerOffset =
 						document.documentElement.classList.remove('dark');
 					}
 			}
+
+			document.documentElement.setAttribute(
+				'data-theme',
+				document.documentElement.classList.contains('dark') ? ecDarkTheme : ecLightTheme,
+			);
 
 			// Load the hue from local storage
 			const hue = localStorage.getItem('hue') || configHue;

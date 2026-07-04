@@ -27,6 +27,13 @@ export function setHue(hue: number): void {
 	r.style.setProperty("--hue", String(hue));
 }
 
+export function getExpressiveCodeThemeName(): string {
+	const isDark = document.documentElement.classList.contains("dark");
+	return isDark
+		? expressiveCodeConfig.darkTheme
+		: expressiveCodeConfig.lightTheme;
+}
+
 export function applyThemeToDocument(theme: LIGHT_DARK_MODE) {
 	switch (theme) {
 		case LIGHT_MODE:
@@ -44,10 +51,9 @@ export function applyThemeToDocument(theme: LIGHT_DARK_MODE) {
 			break;
 	}
 
-	// Set the theme for Expressive Code
 	document.documentElement.setAttribute(
 		"data-theme",
-		expressiveCodeConfig.theme,
+		getExpressiveCodeThemeName(),
 	);
 }
 

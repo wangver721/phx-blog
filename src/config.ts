@@ -133,7 +133,6 @@ export const cloudflareAnalyticsConfig = {
 };
 
 export const expressiveCodeConfig: ExpressiveCodeConfig = {
-	// 注意：部分样式（如背景色）会被 astro.config.mjs 中的覆盖项替换
-	// 请选择深色主题，因为本博客主题目前仅支持深色代码背景
-	theme: "github-dark",
+	lightTheme: "github-light",
+	darkTheme: "github-dark",
 };

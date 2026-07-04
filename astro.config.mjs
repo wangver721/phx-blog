@@ -56,7 +56,7 @@ export default defineConfig({
 			},
 		}),
 		expressiveCode({
-			themes: [expressiveCodeConfig.theme, expressiveCodeConfig.theme],
+			themes: [expressiveCodeConfig.lightTheme, expressiveCodeConfig.darkTheme],
 			plugins: [
 				pluginCollapsibleSections(),
 				pluginLineNumbers(),
@@ -75,7 +75,7 @@ export default defineConfig({
 			styleOverrides: {
 				codeBackground: "var(--codeblock-bg)",
 				borderRadius: "1rem",
-				borderColor: "rgba(255, 255, 255, 0.10)",
+				borderColor: "var(--line-divider)",
 				codeFontSize: "0.875rem",
 				codeFontFamily: "'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
 				codeLineHeight: "1.5rem",
