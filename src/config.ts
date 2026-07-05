@@ -9,7 +9,7 @@ import { LinkPreset } from "./types/config";
 
 // 站点全局配置
 export const siteConfig: SiteConfig = {
-	title: "iPHX.io",
+	title: "Blog.iPHX.io",
 	subtitle: "在忘记前记下",
 	lang: "zh_CN", // 站点语言：zh_CN / en / ja / ...
 	themeColor: {

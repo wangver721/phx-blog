@@ -116,7 +116,7 @@ const bannerOffset =
 		{/* iOS 主屏图标 + 主题色（用于 iOS / Android 浏览器顶部地址栏背景） */}
 		<link rel="apple-touch-icon" sizes="180x180" href={url('/favicon/apple-touch-icon.png')} />
 		<meta name="theme-color" content="#1a0708" />
-		<meta name="apple-mobile-web-app-title" content="iPHX.io" />
+		<meta name="apple-mobile-web-app-title" content={siteConfig.title} />
 
 		<!-- Set the theme before the page is rendered to avoid a flash -->
 		<script is:inline define:vars={{DEFAULT_THEME, LIGHT_MODE, DARK_MODE, AUTO_MODE, BANNER_HEIGHT_EXTEND, PAGE_WIDTH, configHue, ecLightTheme: expressiveCodeConfig.lightTheme, ecDarkTheme: expressiveCodeConfig.darkTheme}}>
